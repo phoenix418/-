@@ -1,0 +1,140 @@
+#include <iostream>
+
+void nom1();
+void nom2();
+void nom3();
+void nom4();
+void nom5();
+void nom6();
+void nom7();
+void nom8();
+
+void nom1() {
+  float lenght, width;
+  std::cout << "Enter the lenght of the rectangle:\n ";
+  std::cin >> lenght;
+  std::cout << "Enter the width of the rectangle:\n ";
+  std::cin >> width;
+  float area = lenght * width;
+  std::cout << "The area of the rectangle is: " << area << std::endl;
+
+}
+
+void nom2() {
+  float depth, width, height;
+  std::cout <<"\n";
+  std::cout << "Enter the depth of the cuboid:\n ";
+  std::cin >> depth;
+  std::cout << "Enter the width of the cuboid:\n ";
+  std::cin >> width;
+  std::cout << "Enter the height of the cuboid:\n ";
+  std::cin >> height;
+  float volume = depth * width * height;
+  std::cout << "The volume of the cuboid is: " << volume << std::endl;
+}
+
+void nom3() {
+  float a;
+  a = 9;
+  std::cout <<"a:\n" << ++a;
+}
+
+void nom4() {
+  int heroes = 0 ;
+  std::cout << "введите кол-во героев:\n ";
+  std::cin >> heroes;
+  int pirates = heroes + 10;
+  std::cout <<" герои срожаются с " << pirates << " пиратами\n "<< std::endl;
+ pirates -= heroes;
+  std::cout <<" осталось " << pirates << " пиратов\n";
+
+}
+
+void nom5()
+{
+  int i = 0;
+  short s = 0;
+  float f = 0;
+  bool b = 0;
+  int c = 0;
+  float result = 0;
+  std::cout << "введите число типа int: \n";
+  std::cin >> i;
+  std::cout << "введите число типа short: \n";
+  std::cin >> s;
+  std::cout << "введите число типа float: \n";
+  std::cin >> f;
+  std::cout << "введите число типа bool: \n";
+  std::cin >> b;
+  std::cout <<"введите действие (+=0, -=1, *=2, /=3): \n";
+  std::cin >> c;
+  if (c == 0)
+    result = i + s + f + b;
+  else if (c == 1)
+    result = i - s - f - b;
+  else if (c == 2)
+    result = i * s * f * b;
+  else if (c == 3)
+    result = i / s / f / b;
+  else
+    std::cout << "неверное значение\n";
+  std::cout << "результат: " << result << std::endl;
+}
+
+void nom6()
+{
+  float money = 0;
+  float day  = 0;
+  float hour = 0;
+  std::cout <<"какая зп? \n";
+  std::cin >> money;
+  std::cout <<"сколько дней? \n";
+  std::cin >> day;
+  std::cout <<"сколько часов в день? \n";
+  std::cin >> hour;
+  if (money >= 80000 && day <= 20 && hour <= 8) {
+    std::cout <<"вы можете работать в этом месте \n"; 
+  }
+  else
+    std::cout <<"не подходит \n";
+}
+
+void nom7() {
+  int age = 0;
+  std::cout << "введите возраст: \n";
+  std::cin >> age;
+  if (age >= 18)
+    std::cout << "вы совершеннолетний и имеете право водить car \n";
+  else
+    std::cout << "вы не совершеннолетний и не имеете право вoдить car \n";
+  
+}
+
+void nom8(){
+  int age = 0;
+  std::cout << "введите возраст: \n";
+  std::cin >> age;
+  if (age <= 12 && age >= 0)
+    std::cout << "вы ребенок \n";
+  else if (age > 12 && age <= 18)
+    std::cout << "вы подросток \n";
+  else if (age > 18 && age <= 60)
+    std::cout << "вы взрослый \n";
+  else if (age > 60 && age <= 156)
+    std::cout << "вы пож. чел. \n";
+  else if (age > 156 && age <= 1000)
+    std::cout << "вы мертвы \n";
+  else
+    std::cout << "вы ввели неверное значение \n";
+    
+}
+int main() {
+  nom1();
+  nom2();
+  nom3();
+  nom4();
+  nom5();
+  nom6();
+  nom7();
+  nom8();
+}
