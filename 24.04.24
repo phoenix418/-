@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+struct List {
+int data;
+List* next;
+};
+
+string decipherArray(const vector<int>& arr) {
+  string result = "";
+  for (int num : arr) {
+    result += char(num + 96);
+    }
+  return result;
+}
+
+void reverseList(List*& Head) {
+  List* prev = NULL;
+  List* current = Head;
+  List* next = NULL;
+  while (current != NULL) {
+    next = current->next;
+    current->next = prev;
+    prev = current;
+    current = next;
+    }
+  Head = prev;
+}
+
+void printList(List* head) {
+  List* temp = head;
+  while (temp != NULL) {
+    cout << temp->data << " -> ";
+    temp = temp->next;
+    }
+  cout << "NULL" << endl;
+}
+
+int main() {
+  vector<int> arr1 = {1, 2, 3};
+  vector<int> arr2 = {19, 3, 15, 20, 21};
+  cout << decipherArray(arr1) << endl; 
+  cout << decipherArray(arr2) << endl; 
+  List* Head = new List{1, new List{2, new List{3, NULL}}};
+  reverseList(Head);
+  printList(Head);
+  List* Head2 = new List{19, new List{3, new List{15, new List{20, new List{21, NULL}}}}};
+  reverseList(Head2);
+  printList(Head2);
+  return 0;
+}
