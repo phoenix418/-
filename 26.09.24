@@ -1,0 +1,103 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Product {
+private:
+    string name;
+    float price;
+    int quantity;
+
+public:
+    Product() {
+        name = "Unknown";
+        price = 0.0;
+        quantity = 0;
+    }
+
+    Product(string prodName, float prodPrice, int prodQuantity) {
+        setName(prodName);
+        setPrice(prodPrice);
+        setQuantity(prodQuantity);
+    }
+
+    void setName(string prodName) {
+        if (prodName.empty()) {
+            cout << "Ошибка: название продукта не может быть пустым" << endl;
+
+            return;
+        }
+        name = prodName;
+    }
+
+    string getName() {
+        return name;
+    }
+
+    void setPrice(float prodPrice) {
+        if (prodPrice <= 0.0) {
+             cout << "Ошибка: цена товара должна быть больше 0" << endl;
+            return;
+        }
+        price = prodPrice;
+    }
+
+    float getPrice() {
+        return price;
+    }
+
+    void setQuantity(int prodQuantity) {
+        if (prodQuantity <= 0) {
+            cout << "Ошибка: Количество продукта должно быть больше 0." << endl;
+            return;
+        }
+        quantity = prodQuantity;
+    }
+
+    int getQuantity() {
+        return quantity;
+    }
+
+    void displayInfo() {
+        cout << "наименование товара: " << name << ", Цена:" << price << ",Количество: " << quantity << endl;
+    }
+    
+    ~Product(){
+        cout << name << "был уничтожен" << endl;
+    }
+};
+
+
+int nom(){
+    Product product1("Apple", 10.99, 5);
+    product1.displayInfo();
+    Product product2;
+    product2.setName("Banana");
+    product2.setPrice(8.99);
+    product2.setQuantity(10);
+    product2.displayInfo();
+    return 0;
+}
+
+
+
+class SimpleObject {
+public:
+    SimpleObject() {
+        cout << "Объект создан." << endl;
+    }
+
+    ~SimpleObject() {
+        cout << "Объект уничтожен." << endl;
+    }
+};
+
+
+int nom1(){
+    cout << "Создаем объект obj1." << endl;
+    SimpleObject obj1; 
+    cout << "Создаем объект obj2." << endl;
+    SimpleObject obj2; 
+    cout << "Завершение функции." << endl;
+    return 0;
+}
