@@ -1,0 +1,109 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class CarTrip {
+private:
+    string destination;
+    float distance;
+    float fuelConsumption;
+    float fuelPrice;
+
+public:
+    CarTrip() {
+        destination = "Unknown";
+        distance = 0.0;
+        fuelConsumption = 0.0;
+        fuelPrice = 0.0;
+    }
+
+    CarTrip(string dest, float dist, float fuelCons, float fuelPric) {
+        destination = dest;
+        distance = dist;
+        fuelConsumption = fuelCons;
+        fuelPrice = fuelPric;
+    }
+
+    void setDestination(std::string dest) {
+        if (dest.empty()) {
+            cout << "Ошибка: Пункт назначения не может быть пустым" << endl;
+            return;
+        }
+        destination = dest;
+    }
+
+    string getDestination() {
+        return destination;
+    }
+
+    void setDistance(float dist) {
+        if (dist <= 0.0) {
+            cout << "Ошибка: Расстояние должно быть больше 0." << endl;
+            return;
+        }
+        distance = dist;
+    }
+
+    float getDistance() {
+        return distance;
+    }
+
+    void setFuelConsumption(float fuelCons) {
+        if (fuelCons <= 0.0) {
+            cout << "Ошибка: Расход топлива должен быть больше 0." << endl;
+            return;
+        }
+        fuelConsumption = fuelCons;
+    }
+
+    float getFuelConsumption() {
+        return fuelConsumption;
+    }
+
+    void setFuelPrice(float fuelPric) {
+        if (fuelPric <= 0.0) {
+            cout << "Ошибка: Цена топлива должна быть больше 0." << endl;
+            return;
+        }
+        fuelPrice = fuelPric;
+    }
+
+    float getFuelPrice() {
+        return fuelPrice;
+    }
+
+    float calculateFuelCost() {
+        return (distance / 100) * fuelConsumption * fuelPrice;
+    }
+
+    float calculateTravelTime(float speed) {
+        if (speed <= 0.0) {
+            cout << "Ошибка: Скорость должна быть больше 0." << endl;
+            return 0.0;
+        }
+        return distance / speed;
+    }
+
+    void displayInfo() {
+        cout << "пункт назначения: " << destination << ", расстояние до пункта назначения в км: " << distance 
+        << " расход топлива (л/100 км): " << fuelConsumption << " цена топлива за литр: " << fuelPrice << endl;
+    }
+};
+
+int main() {
+    CarTrip trip1("Moscow", 500.0, 8.0, 45.0);
+    trip1.displayInfo();
+    cout << "Стоимость топлива: " << trip1.calculateFuelCost() << " рублей" << endl;
+    cout << "Время в пути: " << trip1.calculateTravelTime(60.0) << " часа" << endl;
+
+    CarTrip trip2;
+    trip2.setDestination("St. Petersburg");
+    trip2.setDistance(700.0);
+    trip2.setFuelConsumption(9.0);
+    trip2.setFuelPrice(50.0);
+    trip2.displayInfo();
+    cout << "Стоимость топлива: " << trip2.calculateFuelCost() << " рублей" << endl;
+    cout << "Время в пути: " << trip2.calculateTravelTime(70.0) << " часа" << endl;
+
+    return 0;
+}
