@@ -1,0 +1,67 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Car {
+private:
+    string model;
+    int speed;
+
+public:
+    Car() {
+        model = "Неизвестно";
+        speed = 0;
+    }
+
+    Car(string m, int s) {
+        model = m;
+        speed = s;
+    }
+
+    void setModel(string m) {
+        model = m;
+    }
+
+    string getModel() {
+        return model;
+    }
+
+    void setSpeed(int s) {
+        speed = s;
+    }
+
+    int getSpeed() {
+        return speed;
+    }
+
+    void accelerate(int value) {
+        speed += value;
+        if (speed > 200) {
+            speed = 200;
+        }
+    }
+
+    void brake(int value) {
+        speed -= value;
+        if (speed < 0) {
+            speed = 0;
+        }
+    }
+
+    ~Car() {
+        cout << "Автомобиль " << model << " удален" << endl;
+    }
+};
+
+
+int main() {
+    Car car1;
+    cout << "Модель: " << car1.getModel() << ", Скорость: " << car1.getSpeed() << endl;
+    Car car2("Toyota Camry", 50);
+    cout << "Модель: " << car2.getModel() << ", Скорость: " << car2.getSpeed() << endl;
+    car2.accelerate(100);
+    cout << "Модель: " << car2.getModel() << ", Скорость: " << car2.getSpeed() << endl;
+    car1.brake(20);
+    cout << "Модель: " << car1.getModel() << ", Скорость: " << car1.getSpeed() << endl;
+    return 0;
+}
