@@ -12,6 +12,7 @@ class Lift {
     int capacity;
     int currentLoad;
     vector<string> peopleInLift;
+
   public:
     Lift(int minFloor, int maxFloor, int capacity) {
         this->minFloor = minFloor;
@@ -21,45 +22,59 @@ class Lift {
         this->capacity = capacity;
         this->currentLoad = 0;
     }
+
     void turnOn() {
         isWorking = true;
     }
+
     void turnOff() {
         isWorking = false;
     }
+
     bool isLiftWorking() {
         return isWorking;
     }
+
     int getCurrentFloor() {
         return currentFloor;
     }
+
+
     void callLift(int floor) {
         if (isWorking) {
             if (floor >= minFloor && floor <= maxFloor) {
                 currentFloor = floor;
                 cout << "Лифт едет на этаж " << floor << endl;
-            } else {
+            } 
+            else {
                 cout << "Неверный этаж. Лифт может двигаться только между " << minFloor << " и " << maxFloor << endl;
             }
-        } else {
+        } 
+        else {
             cout << "Лифт не работает. Пожалуйста, включите его." << endl;
         }
     }
-    void enterLift(string person) {
-        if (isWorking) {
-            if (currentLoad < capacity) {
+
+
+    void enterLift(string person){
+        if (isWorking){
+            if(currentLoad < capacity) {
                 peopleInLift.push_back(person);
                 currentLoad++;
                 cout << person << " зашел в лифт." << endl;
-            } else {
+            } 
+            else{
                 cout << "Лифт полон. Невозможно зайти." << endl;
             }
-        } else {
+        } 
+        else{
             cout << "Лифт не работает. Пожалуйста, включите его." << endl;
         }
     }
+
+
     void exitLift(string person) {
-        if (isWorking) {
+        if (isWorking){
             for (int i = 0; i < peopleInLift.size(); i++) {
                 if (peopleInLift[i] == person) {
                     peopleInLift.erase(peopleInLift.begin() + i);
@@ -69,11 +84,14 @@ class Lift {
                 }
             }
             cout << person << " не находится в лифте." << endl;
-        } else {
+        } 
+        else {
             cout << "Лифт не работает. Пожалуйста, включите его." << endl;
         }
     }
 };
+
+
 int main() {
     Lift lift(-1, 10, 5);
     lift.turnOn();
@@ -85,7 +103,11 @@ int main() {
     lift.exitLift("Alice");
     lift.enterLift("Mike");
     cout << "Текущий этаж: " << lift.getCurrentFloor() << endl;
-    cout << "Лифт работает: " << (lift.isLiftWorking() ? "да" : "нет") << endl;
+    if (lift.isLiftWorking()) {
+        cout << "Лифт работает: да" << endl;
+    } else {
+        cout << "Лифт работает: нет" << endl;
+    }
     lift.turnOff();
     lift.callLift(3);
     return 0;
