@@ -1,0 +1,58 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class BankAccount {
+private:
+    string number; 
+    double balance;
+public:
+    BankAccount(const string number, double balance){        
+        this->number = number;
+        this->balance = balance;
+    }
+
+
+    double getBalance() const {
+        return balance;
+    }
+
+
+    void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            cout << "Внесено " << amount << " на счет " << number << endl;
+        } 
+        else {
+            cout << "Неверная сумма для внесения." << endl;
+        }
+    }
+
+
+    void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            cout << "Снято " << amount << " со счета " << number << endl;
+        } 
+        else {
+            cout << "Недостаточно средств или неверная сумма для снятия." << endl;
+        }
+    }
+};
+
+
+int nom1(){
+    BankAccount account1("1234567890", 1000.0);
+    cout << "Баланс счета " << account1.getBalance() << endl;
+    account1.deposit(500.0);
+    cout << "Текущий баланс счета " << account1.getBalance() << endl;
+    account1.withdraw(200.0);
+    cout << "Текущий баланс счета " << account1.getBalance() << endl;
+    return 0;
+}
+
+
+int main() {
+    nom1();
+    return 0;
+}
