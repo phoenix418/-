@@ -1,0 +1,282 @@
+#include<iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+
+class Student {
+    private:
+        std::string name;
+        int age;
+        float grade;
+
+    public:
+      Student() {
+          name = "noName";
+          age = -1;
+          grade = 0;
+      }
+    public:
+      Student(std::string studentName, int studentAge, float studentGrade) {
+          name = studentName;
+          age = studentAge;
+          grade = studentGrade;
+      }
+
+    void displayInfo() {
+        std::cout << "Имя: " << name << ", Возраст: " <<
+        age << ", Средний балл: " << grade << std::endl;
+    }
+
+    void setName(std::string studentName) {
+        name = studentName;
+    }
+
+    std::string getName() {
+        return name;
+    }
+
+    void setAge(int studentAge) {
+        age = studentAge;
+    }
+
+    int getAge() {
+        return age;
+    }
+
+    void setGrade(float studentGrade) {
+        grade = studentGrade;
+    }
+
+    float getGrade() {
+        return grade;
+    }
+
+
+};
+
+
+int nom(){
+  Student student1("Иван", 20, 4.5);
+    student1.displayInfo();
+    return 0;
+}
+
+
+class Book {
+    private:
+        string itle;
+        string author;
+        int year;
+        int pages;
+
+    public:
+      Book(){
+        itle = "noName";
+        author = "noName";
+        year = -1;
+        pages = -1;
+      }
+    public:
+      Book(string bookItle, string bookAuthor, int bookYear, int bookPages){
+        itle = bookItle;
+        author = bookAuthor;
+        year = bookYear;
+        pages = bookPages;
+      }
+
+    void displayInfo(){
+      cout << "Название: " << itle << ", Автор: " << author << ", Год: " << year << ", Страниц: " << pages << endl;
+    }
+    void setItle(string bookItle){
+      itle = bookItle;
+    }
+
+    string getItle(){
+      return itle;
+    }
+
+    void setAuthor(string bookAuthor){
+      author = bookAuthor;
+    }
+
+    string getAuthor(){
+      return author;
+    }
+
+    void setYear(int bookYear){
+      year = bookYear;
+    }
+
+    int getYear(){
+      return year;
+    }
+
+    void setPages(int bookPages){
+      pages = bookPages;
+    }
+
+    int getPages(){
+      return pages;
+    }
+};
+
+
+int nom1(){
+  Book book1("Война и мир", "Лев Толстой", 1869, 1225);
+  book1.displayInfo();
+  return 0;
+}
+
+
+class BankAccount {
+    private:
+        string accountNumber;
+        double balance;
+        string ownerName;
+
+    public:
+      BankAccount() {
+        accountNumber = "noNumber";
+        balance = 0.0;
+        ownerName = "noName";
+    }
+
+    public:
+      BankAccount(string accountNumber, double balance, string ownerName) {
+        this->accountNumber = accountNumber;
+        this->balance = balance;
+        this->ownerName = ownerName;
+    }
+
+    public:
+      BankAccount(string accountNumber, string ownerName) {
+        this->accountNumber = accountNumber;
+        balance = 0.0;
+        this->ownerName = ownerName;
+    }
+
+    void printStatement() {
+        cout << "Номер счета: " << accountNumber << ", Баланс: " << balance << ", Владелец: " << ownerName << endl;
+    }
+
+    void deposit(double amount) {
+        balance += amount;
+    }
+
+    void withdraw(double amount) {
+        if (amount > balance) {
+            cout << "Недостаточно средств на счете!" << endl;
+        } else {
+            balance -= amount;
+        }
+    }
+
+    string getAccountNumber() {
+        return accountNumber;
+    }
+
+    double getBalance() {
+        return balance;
+    }
+
+    string getOwnerName() {
+        return ownerName;
+    }
+
+    void setOwnerName(std::string ownerName) {
+        this->ownerName = ownerName;
+    }
+};
+
+
+int nom2(){
+  BankAccount account1("1234567890", 1000.0, "Иван Иванов");
+  account1.printStatement();
+  account1.deposit(500.0);
+  account1.printStatement();
+  account1.withdraw(200.0);
+  account1.printStatement();
+  BankAccount account2("9876543210", "Петр Петров");
+  account2.printStatement();
+  account2.deposit(1000.0);
+  account2.printStatement();
+  return 0;
+}
+
+
+class Student1 {
+private:
+    string name;
+    int id;
+    vector<int> grades;
+
+public:
+    Student1(){
+        name = "noName";
+        id = -1;
+    }
+
+    Student1(string studentName, int studentId, vector<int> studentGrades) {
+        name = studentName;
+        id = studentId;
+        grades = studentGrades;
+    }
+
+    void setName(string studentName) {
+        name = studentName;
+    }
+
+    string getName() {
+        return name;
+    }
+
+    void setId(int studentId) {
+        id = studentId;
+    }
+
+    int getId() {
+        return id;
+    }
+
+    void addGrade(int grade) {
+        grades.push_back(grade);
+    }
+
+    double calculateAverage() {
+        double sum = 0.0;
+        for (int grade : grades) {
+            sum += grade;
+        }
+        return sum / grades.size();
+    }
+
+    void displayInfo() {
+        cout << "Name: " << name << ", ID: " << id << ", Grades: ";
+        for (int grade : grades) {
+            cout << grade << " ";
+        }
+        cout << ", Average: " << calculateAverage() << endl;
+    }
+};
+
+
+int nom3(){
+    Student1 student1("Ivan", 1, {4, 5, 3, 4, 5});
+    student1.displayInfo();
+    student1.addGrade(5);
+    student1.displayInfo();
+    Student1 student2("Petr", 2, {});
+    student2.setId(2); 
+    student2.addGrade(3);
+    student2.addGrade(4);
+    student2.displayInfo();
+    retrun 0;
+}
+
+int main() {
+  nom();
+  nom1();
+  nom2();
+  return 0;
+}
