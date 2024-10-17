@@ -1,0 +1,198 @@
+#include<iostream>
+#include<numeric>
+using namespace std;
+
+class Fraction{
+private:
+  int numerator;
+  int denominator;
+public:
+  Fraction(int num,int den) : numerator(num), denominator(den){}
+
+  void print(){
+    cout<<numerator<<"/"<<denominator<<endl;
+  }
+
+  Fraction operator+(const Fraction& obj) const {
+      int common = numerator * obj.denominator + obj.numerator * denominator;
+      int now = denominator * obj.denominator;
+      if(common >= now) {
+          return Fraction(common,now);
+  }
+      else{
+             return Fraction(common, now);
+      }
+  }
+
+  Fraction operator-(const Fraction& obj) const {
+      int common = numerator * obj.denominator - obj.numerator * denominator;
+      int now = denominator * obj.denominator;
+      if(common >= now){
+          return Fraction(common,now);
+      }
+      else{
+          return Fraction(common,now);
+      }
+  }
+
+  Fraction operator*(const Fraction& obj) const {
+      int common = numerator * obj.numerator; 
+      int now = denominator * obj.denominator;
+      if(common >= now){
+          return Fraction(common,now);
+      }
+      else{
+          return Fraction(common,now);
+      }
+  }
+  Fraction operator/(const Fraction& obj) const{
+      int common = numerator * obj.denominator;
+      int now = denominator * obj.numerator;
+      if(common >= now){
+          return Fraction(common,now);
+      }
+      else{
+          return Fraction(common,now);
+      }
+  }
+
+Fraction simplify() const {
+    int gcd = 1; 
+    for (int i = 1; i <= min(numerator, denominator); ++i) {
+        if (numerator % i == 0 && denominator % i == 0) {
+            gcd = i;
+        }
+    }
+    return Fraction(numerator / gcd, denominator / gcd);
+}
+};
+
+
+class Vector2D {
+private:
+    float x;
+    float y;
+public:
+    Vector2D(float x = 0, float y = 0) : x(x), y(y) {}
+    void print() const {
+        cout << "Vector(" << x << ", " << y << ")" << endl;
+    }
+    Vector2D operator+(const Vector2D& other) const {
+        this->print();
+        other.print();
+        return Vector2D(x + other.x, y + other.y);
+    }
+    Vector2D operator-(const Vector2D& other) const {
+        this->print();
+        other.print();
+        return Vector2D(x - other.x, y - other.y);
+    }
+    Vector2D operator*(const Vector2D& other) const {
+        this->print();
+        other.print();
+        return Vector2D(x * other.x, y * other.y);
+    }
+    Vector2D operator/(const Vector2D& other) const {
+        this->print();
+        other.print();
+        return Vector2D(x / other.x, y / other.y);
+    }
+};
+
+
+class Array {
+    int* data;
+    int size;
+public:
+
+    Array(int s) : size(s) {
+        data = new int[size];
+        for (int i = 0; i < size; ++i) {
+            data[i] = 0;
+        }
+    }
+
+    ~Array() {
+        delete[] data;
+    }
+
+    int& operator[](int index) {
+        if(index < 0){
+            index = size + index;
+        }
+        if (index < 0 || index >= size){
+            cout << "Индекс вне диапазона" << endl;
+            return data[0];
+        }
+        return data[index];
+    }
+
+    Array& operator=(const Array& other) {
+        size = other.size;
+        data = new int[size];
+        for (int i = 0; i < size; ++i) {
+            data[i] = other.data[i];
+        }
+        return *this;
+    }
+
+    void print() const {
+        for (int i = 0; i < size; ++i) {
+            cout << data[i] << " ";
+        }
+        cout << endl;
+    }
+
+    Array operator+(const Array& other) const {
+        if (size != other.size) {
+            cout << "Ошибка: массивы должны иметь одинаковый размер для сложения" << endl;
+            return *this; 
+        }
+        Array result(size); 
+        for (int i = 0; i < size; ++i) {
+            result.data[i] = data[i] + other.data[i];
+        }
+        return result; 
+    }
+};
+
+
+
+int main(){
+    Vector2D v1(3.0, 5.2);
+    Vector2D v2(1.9, 12.5);
+    Vector2D result = v1 + v2;
+    result.print();
+    result = v1 - v2;
+    result.print();
+    result = v1 * v2;
+    result.print();
+    result = v1 / v2;
+    result.print();
+    Fraction f1(1,2);
+    Fraction f2(2,3);
+    Fraction result1 = f1 + f2;
+    result1.print();
+    Fraction result2 = f1 - f2;
+    result2.print();
+    Fraction result3 = f1 * f2;
+    result3.print();
+    Fraction result4 = f1 / f2;
+    result4.print();
+    Array arr1(5);
+    arr1[0] = 10;
+    arr1[1] = 20;
+    arr1[2] = 30;
+    cout << "arr1: ";
+    arr1.print();
+    Array arr2(5);
+    arr2[0] = 5;
+    arr2[1] = 15;
+    arr2[2] = 25;
+    cout << "arr2: ";
+    arr2.print();
+    Array sum = arr1 + arr2; 
+    cout << "Сумма arr1 и arr2: ";
+    sum.print();
+    return 0;
+}
