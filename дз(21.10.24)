@@ -1,0 +1,149 @@
+#include<iostream>
+#include<vector>
+#include<algorithm> 
+
+using namespace std;
+
+
+class CustomSet {
+private:
+    vector<int> elements;
+public:
+
+    CustomSet(initializer_list<int> userVector) {
+        elements = userVector;
+    }
+
+    CustomSet(const CustomSet& other) {
+        elements = other.elements;
+    }
+
+    CustomSet operator+(const CustomSet& other) const {
+        CustomSet result(*this); 
+        bool exists = false;
+        for (int elem : other.elements) {
+            for (int i = 0; i < result.elements.size(); ++i) {
+                if (result.elements[i] == elem) {
+                    exists = true;
+                }
+            }
+            if (!exists) {
+                result.elements.push_back(elem);
+            }
+            exists = false;
+        }
+        return result;
+    }
+
+    CustomSet& operator-(const CustomSet& other) {
+         for (int elem : other.elements) {
+             for (int i = 0; i < elements.size(); ++i) {
+                if (elements[i] == elem) {
+                    cout << "удаляем " << elem << endl;
+                    elements.erase(elements.begin() + i);
+
+                }
+            }
+        }
+        return *this;
+    }
+
+    CustomSet& operator+=(int value) {
+       bool exists = false;
+       for (int i = 0; i < elements.size(); ++i) {
+           if (elements[i] == value) {
+               exists = true;
+            }
+    }
+        if (!exists) {
+            cout << "элемент " << value << " добавлен" << endl;
+            elements.push_back(value);
+    }
+    return *this;
+}
+
+    CustomSet& operator-=(int value) {
+        for (int i = 0; i < elements.size(); ++i) {
+            if (elements[i] == value) {
+               elements.erase(elements.begin() + i);
+               break; 
+        }
+    }
+    return *this;
+}
+
+    CustomSet& operator*=(const CustomSet& other){
+        for (int elem : other.elements){
+            for (int i = 0; i < elements.size(); ++i){
+               if (elements[i] == elem){
+            }
+               else{
+                   elements.push_back(elem);
+            }
+        }
+    }
+    return *this;
+}
+
+
+    CustomSet operator*(const CustomSet& other) {    
+        CustomSet result = {}; 
+        for (int elem : elements) {
+            if (find(other.elements.begin(), other.elements.end(), elem) != other.elements.end()) {
+               result.elements.push_back(elem);
+        }
+    }
+        return result;
+}
+
+    CustomSet operator/(const CustomSet& other) {
+       CustomSet result = {};
+       for (int elem : elements) {
+          if (find(other.elements.begin(), other.elements.end(), elem) == other.elements.end()) {
+             result.elements.push_back(elem);
+        }
+    }
+        for (int elem : other.elements) {
+           if (find(elements.begin(), elements.end(), elem) == elements.end()) {
+               result.elements.push_back(elem);
+        }
+    }
+        return result;
+}
+
+
+void display() const {
+    cout << "{";
+    for (int elem : elements) {
+        cout << elem << " ";
+    }
+    cout << "}" << endl;
+}
+};
+
+
+int main(){
+    CustomSet setA = {3, 8, 52, 56, 5, 11};
+    setA.display();
+    CustomSet setB = {13, 8, 90, 2, 11};
+    setB.display();
+    CustomSet join = setA + setB;
+    cout << "Объединение setA и setB:" << endl;
+    join.display();
+    CustomSet difference = setA - setB;
+    cout << "Разность setA и setB:" << endl;
+    difference.display();
+    CustomSet intersection = setA * setB;
+    cout << "Пересечение setA и setB:" << endl;
+    intersection.display();
+    CustomSet exclusiveOr = setA / setB;
+    cout << "Исключающее ИЛИ setA и setB:" << endl;    
+    exclusiveOr.display();
+    CustomSet setC = {3, 8, 52, 56, 5, 11};
+    setC.display();
+    setC += 4;
+    setC.display();
+    setC -= 4;
+    setC.display();
+    return 0;
+}
