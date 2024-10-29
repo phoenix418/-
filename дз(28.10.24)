@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <type_traits>
+using namespace std;
+
+
+template <typename T>
+T multiplay(T* arr, int size) {
+    T result = 1;
+    for (int i = 0; i < size; ++i) {
+        result *= arr[i];
+    }
+    return result;
+}
+
+
+template <typename T1 , typename T2>
+auto allmultiplay(T1* arr, int size, T2* arr2, int size2) {
+    T1 result = 1;
+    for (int i = 0; i < size; ++i){
+        result *= arr[i];
+    }
+    T2 result2 = 1;
+    for (int i = 0; i < size2; ++i){
+        result2 *= arr2[i];
+    }
+    return result * result2;
+}
+
+int main() {
+    int intArray[] = {1, 2, 3, 4};
+    int intSize = sizeof(intArray) / sizeof(intArray[0]);
+    cout << "Произведение чисел 1 массива : " << multiplay(intArray, intSize) << endl;
+    double doubleArray[] = {1.5, 2.0, 3.5};
+    int doubleSize = sizeof(doubleArray) / sizeof(doubleArray[0]);
+    cout << "Произведение чисел 2 массива: " << multiplay(doubleArray, doubleSize) << endl;
+    cout << "Произведение всех чисел из двух массивов: " << allmultiplay(doubleArray, doubleSize, intArray, intSize) << endl;
+    return 0;
+}
