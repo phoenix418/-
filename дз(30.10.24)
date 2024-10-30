@@ -68,12 +68,13 @@ int main() {
     cout << "Сжатый текст: '" << compres << "'" << endl;
     cout << "№2" << endl;
     string code = "int main() { // Это главная функция\n"
-                  "    /* Это многострочный комментарий\n"
-                  "       который продолжается\n"
-                  "       на нескольких строках */\n"
+                  "    /*fgbfiodnfbuivuavnuvbuneuhvhrh\n"
+                  "       fdvbrvegagvrcheuvhreuvruuov\n"
+                  "       dcdskvbdfvuwbcugfvwegusf*/\n"
                   "    return 0; // Возвращаем 0\n"
                   "}";
     string cleanCode = remove(code);
     cout << "Код без комментариев:\n" << cleanCode << endl;
     return 0;
 }
+
