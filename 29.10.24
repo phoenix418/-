@@ -1,0 +1,144 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <initializer_list>
+using namespace std;
+
+
+template<typename... Args>
+class Logger {
+public:
+    Logger(Args... args) {
+        print(args...);
+    }
+
+    void print() {
+        cout << endl;
+    }
+
+private:
+    template<typename First, typename... Rest>
+    void print(First first, Rest... rest) {
+        cout << first << " " ;
+        print(rest...);
+    }
+};
+
+
+template <typename... Args>
+class MultiHolder {
+public:
+    MultiHolder(Args... args) {
+        print(args...);
+    }
+
+    void print() const {
+        cout << endl;
+    }
+
+private:
+    template<typename First, typename... Rest>
+    void print(First first, Rest... rest) {
+        cout << first << " " << endl;
+        print(rest...);
+    }
+    void print() {
+        cout << endl;
+    }
+};
+
+
+template <typename... Args>
+class SumAll {
+private:
+    double sum = 0; 
+
+public:
+    SumAll(initializer_list<int> values) {
+        for (int value : values) {
+            sum += value;
+        }
+    }
+
+    SumAll(Args... args) {
+        sum = (args + ...); 
+    }
+
+    double getSum() const {
+        return sum;
+    }
+};
+
+
+class MaxFinder {
+private:
+    initializer_list<int> elements;
+
+public:
+    MaxFinder(initializer_list<int> values){
+        elements = values;
+    }
+
+    int getMax() {
+        int max = *elements.begin(); 
+        for (int value : elements) {
+            if (value > max) {
+                max = value;
+            }
+        }
+        return max;
+    }
+};
+
+
+class UniqueContainer {
+private:
+    vector<int> elements; 
+
+public:
+    UniqueContainer(initializer_list<int> values) {
+        for (int value : values) {
+            add(value); 
+        }
+    }
+
+
+    void add(int value) {
+        if (!contains(value)) {
+            elements.push_back(value); 
+        }
+    }
+
+
+    bool contains(int value) const {
+        for (int elem : elements) {
+            if (elem == value) {
+                return true; 
+            }
+        }
+        return false; 
+    }
+
+
+    void print() const {
+        for (int value : elements) {
+            cout << value << " ";
+        }
+        cout << endl;
+    }
+};
+
+int main() {    
+    Logger<string, int, string> log("Error", 404, "Not Found");
+    MultiHolder<int, double, string> holder(10, 3.14, "Hello"); 
+    SumAll<int, double, int, float> result(1, 2.5, 3, 4.7f);
+    cout << "Сумма: " << result.getSum() << endl; 
+    MaxFinder finder = {3, 5, 7, 2, 9};
+    cout << "Максимум: " << finder.getMax() << endl;
+    UniqueContainer uc = {1, 2, 2, 3, 4, 5, 5};
+    uc.print(); 
+    uc.add(3);  
+    uc.add(6);  
+    uc.print(); 
+    return 0;
+}
