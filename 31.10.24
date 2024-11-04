@@ -1,0 +1,96 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+string swapFirstAndLast(string str) {
+    char temp = str.front(); 
+    str.front() = str.back(); 
+    str.back() = temp;
+    return str;
+}
+
+
+string replaceVowels(string str) {
+    for (char& c : str) {
+        if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'y' ||
+            c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U' || c == 'Y') {
+            c = '*';
+        }
+    }
+    return str;
+}
+
+
+string createAbbreviation(string str1, string str2) {
+    string abbreviation = "";
+    abbreviation += str1.front();
+    abbreviation += str2.front();
+    return abbreviation;
+}
+
+
+string addTextToEnd(string str, string text) {
+    str.append(text);
+    return str;
+}
+
+
+string insertWordAtPosition(string str, string word, int position) {
+    str.insert(position, word);
+    return str; 
+}
+
+
+string insertWords(string str) {
+    str.insert(13, "jumped "); 
+    str.insert(20, "quickly "); 
+    return str;
+}
+
+
+string removeSpaces(const string& str) {
+    string result;
+    for (char ch : str) {
+        if (ch != ' ') {
+            result += ch; 
+        }
+    }
+    return result;
+}
+
+
+string replacePhrase(string str, string oldPhrase, string newPhrase) {
+    size_t oldPL = oldPhrase.length();
+    size_t strL = str.length();
+    for (size_t i = 0; i <= strL - oldPL; ++i) {
+        if (str.substr(i, oldPL) == oldPhrase) {
+            str.replace(i, oldPL, newPhrase);
+            i += newPhrase.length() - 1; 
+            strL = str.length(); 
+        }
+    }
+    return str;
+}
+
+
+int main() {
+    string str = "Alexander";
+    cout << swapFirstAndLast(str) << endl; 
+    string str1 = "hello";
+    cout << replaceVowels(str1) << endl; 
+    string str2 = "Hello";
+    string str3 = "World";
+    cout << createAbbreviation(str2, str3) << endl; 
+    string str4 = "The quick brown fox";
+    cout << addTextToEnd(str4, " jumps") << endl; 
+    string str5 = "I love programming";
+    cout << insertWordAtPosition(str5, " really", 1) << endl; 
+    string str6 = "The dog over the fence";
+    cout << insertWords(str6) << endl; 
+    string str7 = "C++ is fun to learn";
+    cout << removeSpaces(str7) << endl; 
+    string str8 = "Coding is fun";
+    cout << replacePhrase(str8, "fun", "challenging") << endl; 
+    return 0;
+}
