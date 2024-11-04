@@ -1,0 +1,37 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+
+int main() {
+    string userInput;
+    cout << "Введите строку: ";
+    getline(cin, userInput);
+    if (!userInput.empty()) {
+        char firstChar = userInput[0];
+        char lastChar = userInput[userInput.length() - 1];
+        cout << "Первый символ: " << firstChar << endl;
+        cout << "Последний символ: " << lastChar << endl;
+    } 
+    else {
+        cout << "Строка пустая." << endl;
+    }
+    int lengthString = userInput.length();
+    cout << "Длина строки: " << lengthString << endl;
+    string cleanedString;
+    for (char c : userInput) {
+        if (c != ' ') { 
+            cleanedString += tolower(c); 
+        }
+    }
+    string reversedInput = cleanedString; 
+    reverse(reversedInput.begin(), reversedInput.end()); 
+    if (cleanedString == reversedInput) {
+        cout << "Строка является палиндромом." << endl;
+    } 
+    else {
+        cout << "Строка не является палиндромом." << endl;
+    }
+    return 0;
+}
