@@ -1,0 +1,45 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+void parseFilePath(string& filePath, string& pathWF, string&  Name, string& fileExt, string& fileExten, string& fileNExt){
+    int lastSlash = filePath.find_last_of("\\/");
+    if(lastSlash != string::npos){
+        pathWF = filePath.substr(0, lastSlash);
+        fileExt = filePath.substr(lastSlash + 1);
+    }
+    else {
+        pathWF = ""; 
+        fileExt = filePath;
+    }
+    int lastFolderSlash = pathWF.find_last_of("\\/");
+    if (lastFolderSlash != string::npos) {
+        Name = pathWF.substr(lastFolderSlash + 1);
+    } 
+    else {
+        Name = ""; 
+    }
+    int dotPosition = fileExt.find_last_of('.');
+    if (dotPosition != string::npos) {
+        fileExten  = fileExt.substr(dotPosition); 
+        fileNExt = fileExt.substr(0, dotPosition);
+    } 
+    else {
+        fileExten = "";
+        fileNExt = fileExt; 
+    }
+}
+
+
+int main(){
+    string filePath = "C:\\Step\\C++lesson_03\\Docs\\Less03.docx";
+    string pathWF, Name, fileExt, fileExten, fileNExt;
+    parseFilePath(filePath, pathWF, Name, fileExt, fileExten, fileExt);
+    cout << "a) Путь без имени файла: " << pathWF << endl;
+    cout << "b) Имя последней папки в пути: " <<  Name << endl;
+    cout << "c) Имя файла с расширением, но без пути: " << fileExt << endl;
+    cout << "d) Расширение имени файла: " << fileExten << endl;
+    cout << "e) Имя файла без пути и без расширения: " << fileNExt << endl;
+    return 0;
+}
