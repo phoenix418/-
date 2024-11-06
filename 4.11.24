@@ -1,0 +1,215 @@
+#include <iostream>
+#include <string>
+#include<iostream>
+using namespace std;
+
+
+class Stack {
+private:
+    int top;
+    int arr[100];
+
+public:
+    Stack() : top(-1) {}
+
+
+void push(int value) {
+        if (top >= 99) {
+            cout << "Stack overflow!\n";
+            return;
+        }
+        arr[++top] = value;
+    }
+
+    void pop() {
+        if (top == -1) {
+            cout << "Стек пуст\n";
+            return;
+        }
+        top--;
+    }
+
+
+    void printStack() {
+        if (isEmpty()) {
+            cout << "Стек пуст\n";
+            return;
+        }
+        for(int i = top; i >= 0; i--) {
+            cout << arr[i] << " "  << endl;
+        }
+    }
+
+
+    int peek() {
+        if (top == -1) {
+            cout << "Стек пуст\n";
+            return -1; 
+        }
+        return arr[top];
+    }
+
+
+    bool isEmpty() {
+        return top == -1;
+    }
+    
+    
+    void print3() {
+        if (top < 2) {
+            cout << "В стеке меньше 3 элементов\n";
+            return;
+        }
+        for (int i = top; i > top - 3; i--) {
+            cout << arr[i] << endl;
+        }
+    }
+};
+
+
+class Queue {
+private:
+    int front, rear;
+    int arr[100];
+    int maxSize;
+public:
+    Queue(int size ) : front(-1), rear(-1), maxSize(size) {}
+
+    bool isFull() {
+        return rear == maxSize - 1;
+    }
+
+    bool isEmpty() {
+        return front == -1 || front > rear;
+    }
+
+    void enqueue(int value) {
+        if (isFull()) {
+            cout << "Очередь переполнена!\n";
+            return;
+        }
+        if (isEmpty()) front = 0;
+        arr[++rear] = value;
+    }
+
+    void dequeue() {
+        if (isEmpty()) {
+            cout << "Очередь пуста!\n";
+            return;
+        }
+        front++;
+    }
+
+
+    int getFront() {
+        return arr[front];
+    }
+
+
+    void printQueue() {
+        for (int i = front; i <= rear; i++) {
+            cout << arr[i] << " ";
+        }
+        cout << endl;
+    }
+};
+
+
+class Queue2 {
+private:
+    int front, rear;
+    int arr[100];
+    int maxSize;
+public:
+    Queue2(int size) : front(0), rear(0), maxSize(size) {}
+
+
+    bool isFull() {
+         return (rear + 1) % maxSize == front; 
+    }
+
+
+    bool isEmpty() {
+        return front == rear;
+    }
+
+
+    void enqueue(int value) {
+        if (isFull()) {
+            cout << "Очередь переполнена!\n";
+            return;
+        }
+        arr[rear] = value;
+        rear = (rear + 1) % maxSize; 
+    }
+
+
+    void dequeue() {
+        if (isEmpty()) {
+            cout << "Очередь пуста!\n";
+            return;
+        }
+        front = (front + 1) % maxSize; 
+    }
+
+
+    int getFront() {
+        if (isEmpty()) {
+            cout << "Очередь пуста!\n";
+            return -1; 
+        }
+        return arr[front]; 
+    }
+
+
+    void printQueue() {
+        if (isEmpty()) {
+            cout << "Очередь пуста!\n";
+            return;
+        }
+        for (int i = front; i != rear; i = (i + 1) % maxSize) {
+            cout << arr[i] << " ";
+        }
+        cout << endl;
+    }
+};
+
+
+int main(){
+    Stack s;
+    s.push(10);
+    s.push(20);
+    s.push(30);
+    s.push(30);
+    s.push(20);
+    s.push(10);
+    s.push(20);
+    s.push(30);
+    s.push(30);
+    s.push(20);
+    s.printStack();
+    cout << "Верхний элемент: " << s.peek() << endl; 
+    s.print3();
+    Queue q1(5);
+    q1.enqueue(10);
+    q1.enqueue(20);
+    q1.enqueue(30);
+    q1.enqueue(40);
+    q1.printQueue();
+    q1.dequeue();
+    q1.printQueue();
+    q1.getFront();
+    cout << q1.getFront() << endl;
+    cout << endl;
+    Queue2 q2(5);
+    q2.enqueue(10);
+    q2.enqueue(20);
+    q2.enqueue(30);
+    q2.enqueue(40);
+    q2.printQueue();
+    q2.dequeue();
+    q2.printQueue();
+    q2.getFront();
+    cout << q2.getFront() << endl;
+    return 0;
+}
