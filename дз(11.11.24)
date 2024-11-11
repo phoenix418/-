@@ -1,0 +1,90 @@
+#include <iostream>
+using namespace std;
+
+
+class CircularQueue {
+private:
+    int *queue;
+    int front;
+    int rear;
+    int maxSize;
+
+public:
+
+    CircularQueue(int size) {
+        maxSize = size;
+        queue = new int[maxSize];
+        front = -1;
+        rear = -1;
+    }
+
+
+    ~CircularQueue() {
+        delete[] queue;
+    }
+
+
+    void enqueue(int value) {
+        if (isFull()) {
+            cout << "Очередь полна!" << endl;
+            return;
+        }
+        if (isEmpty()) {
+            front = 0;
+        }
+        rear = (rear + 1) % maxSize;
+        queue[rear] = value;
+    }
+
+
+    int dequeue() {
+        if (isEmpty()) {
+            cout << "Очередь пуста!" << endl;
+            return -1;
+        }
+        int value = queue[front];
+        if (front == rear) {
+            front = rear = -1;
+        } 
+        else {
+            front = (front + 1) % maxSize;
+        }
+        return value;
+    }
+
+
+    int getFront() {
+        if (isEmpty()) {
+            cout << "Очередь пуста!" << endl;
+            return -1;
+        }
+        return queue[front];
+    }
+
+
+    bool isEmpty() {
+        return front == -1;
+    }
+
+
+    bool isFull() {
+        return (rear + 1) % maxSize == front;
+    }
+};
+
+
+int main() {
+    CircularQueue queue(3);
+    queue.enqueue(1);
+    queue.enqueue(2);
+    queue.enqueue(3);
+    cout << "Первый элемент в очереди: " << queue.getFront() << endl;
+    cout << "Удаляем элемент: " << queue.dequeue() << endl;
+    cout << "Первый элемент после удаления: " << queue.getFront() << endl;
+    queue.enqueue(4);
+    cout << "Добавляем элемент 4" << endl;
+    cout << "Удаляем элемент: " << queue.dequeue() << endl;
+    queue.enqueue(4);
+    cout << "Первый элемент после добавления 4: " << queue.getFront() << endl;
+    return 0;
+}
