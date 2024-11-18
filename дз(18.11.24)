@@ -1,0 +1,83 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+class SportsTeam{
+protected:
+    string teamName;
+    string sport;
+    int numberOfPlayers;
+
+public:
+    SportsTeam(string name, string sportType, int numPlayers) : teamName(name), sport(sportType), numberOfPlayers(numPlayers){}
+
+
+    virtual void introduceTeam()  {
+        cout << "Команда: " << teamName << endl;
+        cout << "Вид спорта: " << sport << endl;
+        cout << "Количество игроков: " << numberOfPlayers << endl;
+    }
+
+
+    void playMatch(){
+        cout << teamName << " играет матч!" << endl;
+    }
+};
+
+
+class FootballTeam : public SportsTeam {
+private:
+    string coachName;
+
+public:
+    FootballTeam(string name, int numPlayers, string coach) : SportsTeam(name, "Футбол", numPlayers){
+        coachName = coach;
+    }
+
+
+    void introduceTeam() override {
+        SportsTeam::introduceTeam();
+        cout << "Тренер: " << coachName << endl;
+    }
+
+
+    void scoreGoal() {
+        cout << teamName << " забивает гол!" << endl;
+    }
+};
+
+class BasketballTeam : public SportsTeam {
+private:
+    string homeCourt;
+
+public:
+    BasketballTeam(string name, int numPlayers, string court): SportsTeam(name, "Баскетбол", numPlayers){
+        homeCourt = court;
+    }
+
+
+    void introduceTeam() override {
+        SportsTeam::introduceTeam();
+        cout << "Cтадион: " << homeCourt << endl;
+    }
+
+
+    void shootHoop() {
+        cout << teamName << " забрасывает мяч в корзину!" << endl;
+    }
+};
+
+
+int main() {
+    FootballTeam footballTeam("ФК Ростов", 11, "Александр Голубев");
+    BasketballTeam basketballTeam("ЦСКА", 12, "Андреас ПистиолисЭ" );
+    footballTeam.introduceTeam();
+    footballTeam.playMatch();
+    footballTeam.scoreGoal();
+    cout << endl;
+    basketballTeam.introduceTeam();
+    basketballTeam.playMatch();
+    basketballTeam.shootHoop();
+    return 0;
+}
