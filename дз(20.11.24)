@@ -1,0 +1,43 @@
+#include <iostream>
+using namespace std;
+
+
+class Student {
+public:
+
+
+    int studyHours(int weeks) {
+        return weeks * 10;
+    }
+};
+
+
+class Teacher{
+public:
+
+
+    int teachingHours(int weeks){
+        return weeks * 5;
+    }
+};
+
+
+class User : public Student, public Teacher {
+public:
+
+
+    void totalHours(int weeks) {
+        int total = studyHours(weeks) + teachingHours(weeks);
+        cout << "Общее количество часов: " <<total << endl;
+    }
+};
+
+
+int main(){
+    User user;
+    int weeks;
+    cout << "Введите количество недель: ";
+    cin >> weeks;
+    user.totalHours(weeks);
+    return 0;
+}
