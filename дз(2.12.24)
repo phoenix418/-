@@ -1,0 +1,27 @@
+#include <iostream>
+#include <stdexcept>
+using namespace std;
+
+
+int main(){
+  int a, b;
+  cout << "Введите два числа: ";
+  cin >> a >> b;
+  try {
+    if (b == 0) {
+      throw runtime_error("Деление на ноль!");
+    }
+    int result = a / b;
+    cout << "Результат деления: " << result << endl;
+  } 
+  catch (runtime_error e) { 
+    cerr << "Ошибка: " << e.what() << endl; 
+  } 
+  catch (exception e) { 
+    cerr << "Непредвиденная ошибка: " << e.what() << endl;
+  } 
+  catch (...) { 
+    cerr << "Неизвестная ошибка." << endl;
+  }
+  return 0;
+}
