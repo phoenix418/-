@@ -1,0 +1,83 @@
+#include <iostream>
+#include <queue>
+#include <thread>
+#include <mutex>
+#include <random>
+#include <chrono>
+using namespace std;
+
+
+class TaskQueue {
+private:
+    queue<int> tasks;
+    mutex mtx;
+    bool hasTasks = false;
+
+public:
+    void addTask(int task) {
+        lock_guard<mutex> lock(mtx);
+        tasks.push(task);
+        cout << "Задача " << task << " добавлена в очередь." << endl;
+        hasTasks = true;
+    }
+
+
+    int getTask() {
+        lock_guard<mutex> lock(mtx);
+        if (tasks.empty()) {
+            return -1;
+        }
+        int task = tasks.front();
+        tasks.pop();
+        if (tasks.empty()) {
+            hasTasks = false;
+        }
+        return task;
+    }
+
+
+    bool tasksAvailable() {
+        lock_guard<mutex> lock(mtx);
+        return hasTasks;
+    }
+};
+
+
+void client(TaskQueue& queue, int clientId) {
+    default_random_engine generator(clientId);
+    uniform_int_distribution<int> distribution(1, 10);
+    for (int i = 0; i < distribution(generator); ++i) {
+        int task = distribution(generator);
+        queue.addTask(task);
+        this_thread::sleep_for(chrono::milliseconds(100));
+    }
+    for (int i = 0; i < 5; ++i) {
+        while (true) {
+            if (queue.tasksAvailable()) {
+                int task = queue.getTask();
+                if (task != -1) {
+                    cout << "Клиент " << clientId << " выполняет задачу " << task << "." << endl;
+                    this_thread::sleep_for(chrono::milliseconds(200));
+                    break;
+                }
+            } 
+            else {
+                this_thread::sleep_for(chrono::milliseconds(50));
+            }
+        }
+    }
+}
+
+
+int main() {
+    TaskQueue queue;
+    const int numClients = 3;
+    thread clients[numClients];
+    for (int i = 0; i < numClients; ++i) {
+        clients[i] = thread(client, ref(queue), i);
+    }
+    for (int i = 0; i < numClients; ++i) {
+        clients[i].join();
+    }
+    return 0;
+}
