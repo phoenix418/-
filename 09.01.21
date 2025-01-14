@@ -1,0 +1,275 @@
+#include <iostream> 
+#include <vector> 
+#include <string> 
+#include <fstream> 
+#include <thread> 
+#include <mutex> 
+#include <chrono> 
+#include <fstream> 
+#include <sstream> 
+using namespace std; 
+int RESULT = 0;
+mutex mtx; 
+int wordCount = 0; 
+int COUNTER = 0; 
+int NUM_PHILOSOPHERS = 5;
+
+
+void printString(string str) { 
+    cout << str << endl; 
+} 
+
+
+void nom2(int start, int end) { 
+    int sum = 0; 
+    for (int i = start; i <= end; ++i) { 
+        sum += i; 
+    } 
+    cout << "Сумма: " << sum << endl; 
+} 
+
+
+void nom3(int start, int end) { 
+    for (int i = start; i <= end; ++i) { 
+        cout << "Thread 1: " << i << endl; 
+    } 
+} 
+
+
+void nom4(const string& name) { 
+    cout << "Привет " << name << endl; 
+} 
+
+
+
+void sum3(const vector<int>& numbers, int start, int end) { 
+    for (int i = start; i <= end; ++i) { 
+        RESULT += numbers[i]; 
+    } 
+} 
+
+
+
+void add_to_vector(vector<int>& numbers, int num) { 
+    lock_guard<mutex> lock(mtx); 
+    numbers.push_back(num); 
+} 
+
+
+void findNumber(const vector<int>& numbers, int start, int end, int target, int delay_second) { 
+    for (int i = start; i <= end; ++i) { 
+        if (numbers[i] == target) { 
+            cout << "Номер найден по индексу : " << i << endl; 
+            return; 
+        } 
+        this_thread::sleep_for(chrono::seconds(delay_second)); 
+    } 
+    cout << "Номер не найден в этом разделе." << endl; 
+} 
+
+
+void countWords(const string& filename, int start, int end) { 
+    ifstream file(filename); 
+    if (!file.is_open()) { 
+        cerr << "Ошибка открытия файла: " << filename << endl; 
+        return; 
+    } 
+    string line; 
+    int currentLine = 0; 
+    while (getline(file, line) && currentLine <= end) { 
+        if (currentLine >= start) { 
+            stringstream ss(line); 
+            string word; 
+            while (ss >> word) { 
+                lock_guard<mutex> lock(mtx); 
+                wordCount++; 
+            } 
+        } 
+        currentLine++; 
+    } 
+    file.close(); 
+} 
+
+
+void increment() { 
+    for (int i = 0; i < 1000000; ++i) { 
+        COUNTER++; 
+    } 
+} 
+
+
+void counterThread(int iterations) { 
+    for (int i = 0; i < iterations; ++i) { 
+        lock_guard<mutex> lock(mtx); 
+        COUNTER++; 
+    } 
+} 
+
+
+void printNumbersThread(int start, int end) { 
+    for (int i = start; i <= end; ++i) { 
+        lock_guard<mutex> lock(mtx); 
+        cout << i << endl; 
+    } 
+} 
+
+
+void logThread(vector<string>& log, const string& message) { 
+    lock_guard<mutex> lock(mtx); 
+    log.push_back(message); 
+} 
+
+
+void addGoodsThread(int& counter, int iterations) { 
+    for (int i = 0; i < iterations; ++i) { 
+        lock_guard<mutex> lock(mtx); 
+        counter++; 
+        cout << "Добавлено хорошо, счетчик: " << counter << endl; 
+    } 
+} 
+
+
+void takeGoodsThread(int& counter, int iterations) { 
+    for (int i = 0; i < iterations; ++i) { 
+        lock_guard<mutex> lock(mtx); 
+        if (counter > 0) { 
+            counter--; 
+            cout << "Взял, счетчик: " << counter << endl; 
+        } 
+        else { 
+            cout << "Нет доступных товаров." << endl; 
+        } 
+    } 
+} 
+
+
+void pingPongThread(string message, mutex mtx) { 
+    for (int i = 0; i < 5; ++i) { 
+        lock_guard<mutex> lock(mtx); 
+        cout << message << endl; 
+    } 
+} 
+
+
+mutex table_mutex; 
+void eat(int philosopher_id) {
+    lock_guard<mutex> lock(table_mutex);
+    cout << "Философ " << philosopher_id << " кушает." << endl;
+    this_thread::sleep_for(chrono::seconds(1)); 
+    cout << "Философ " << philosopher_id << " закончил кушать." << endl;
+}
+void philosopher(int philosopher_id) {
+    while (true) {
+        this_thread::sleep_for(chrono::seconds(1)); 
+        cout << "Философ " << philosopher_id << " думает." << endl;
+        unique_lock<mutex> lock(table_mutex, defer_lock);
+        if (lock.try_lock()) {
+            eat(philosopher_id);
+        } else {
+            cout << "Философ " << philosopher_id << " ждет, пока сможет покушать." << endl;
+        }
+    }
+}
+int main() { 
+    string message = "Привет из ветки!"; 
+    thread t(printString, message); 
+    t.join(); 
+    thread a1(nom2, 1, 10); 
+    thread a2(nom2, 11, 20); 
+    a1.join(); 
+    a2.join(); 
+    thread t1(nom3, 1, 5); 
+    thread t2(nom3, 6, 10); 
+    thread t3(nom3, 11, 15); 
+    t1.join(); 
+    t2.join(); 
+    t3.join(); 
+    string name = "Максим"; 
+    thread b1(nom4, name); 
+    b1.join(); 
+    vector<int> numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }; 
+    int mid = numbers.size() / 2; 
+    thread t4(sum3, numbers, 0, mid - 1); 
+    thread t5(sum3, numbers, mid, numbers.size() - 1); 
+    t4.join(); 
+    t5.join(); 
+    cout << "Sum: " << RESULT << endl; 
+    vector<int> v; 
+    thread th1(add_to_vector, ref(v), 1); 
+    thread th2(add_to_vector, ref(v), 2); 
+    th1.join(); 
+    th2.join(); 
+    for (int i = 0; i < v.size(); i++) { 
+        cout << v[i] << endl; 
+    } 
+    int target; 
+    cout << "Введите число, чтобы найти : "; 
+    cin >> target; 
+    int midPoint = numbers.size() / 2; 
+    thread firstThread(findNumber, numbers, 0, midPoint - 1, target, 7); 
+    thread secondThread(findNumber, numbers, midPoint, numbers.size() - 1, target, 9); 
+    firstThread.join(); 
+    secondThread.join(); 
+    string filename; 
+    cout << "Введите имя файла : "; 
+    cin >> filename; 
+    ifstream file(filename); 
+    if (!file.is_open()) { 
+        cerr << "Введите имя файла: " << filename << endl; 
+        return 1; 
+    } 
+    string line; 
+    int lineCount = 0; 
+    while (getline(file, line)) { 
+        lineCount++; 
+    } 
+    file.close(); 
+    int midPoint1 = lineCount / 2; 
+    thread t7(countWords, filename, 0, midPoint1 - 1); 
+    thread t8(countWords, filename, midPoint1, lineCount - 1); 
+    t7.join(); 
+    t8.join(); 
+    cout << "Общее количество слов : " << wordCount << endl; 
+    thread s1(increment); 
+    thread s2(increment); 
+    t1.join(); 
+    t2.join(); 
+    cout << COUNTER; 
+    thread counterThread1(counterThread, 1000); 
+    thread counterThread2(counterThread, 1000); 
+    counterThread1.join(); 
+    counterThread2.join(); 
+    cout << "Окончательное значение счетчика : " << COUNTER << endl; 
+    thread printNumbersThread1(printNumbersThread, 1, 5); 
+    thread printNumbersThread2(printNumbersThread, 6, 10); 
+    printNumbersThread1.join(); 
+    printNumbersThread2.join(); 
+    vector<string> log; 
+    thread logThread1(logThread, ref(log), "Сообщение 1"); 
+    thread logThread2(logThread, ref(log), "Сообщение 2"); 
+    logThread1.join(); 
+    logThread2.join(); 
+    cout << "Записи журнала : " << endl; 
+    for (const auto& entry : log) { 
+        cout << entry << endl; 
+    } 
+    int goodsCounter = 0; 
+    thread addGoods(addGoodsThread, ref(goodsCounter), 5); 
+    thread takeGoods(takeGoodsThread, ref(goodsCounter), 5); 
+    addGoods.join(); 
+    takeGoods.join(); 
+    mutex pingPongMutex; 
+    thread ping(pingPongThread, "Пинг", ref(pingPongMutex)); 
+    thread pong(pingPongThread, "Понг", ref(pingPongMutex)); 
+    ping.join(); 
+    pong.join(); 
+    vector<thread> philosophers;
+    mutex philosopher_mutex[NUM_PHILOSOPHERS]; 
+    for (int i = 0; i < NUM_PHILOSOPHERS; ++i) {
+        philosophers.emplace_back(philosopher, i);
+    }
+    for (auto& philosopher : philosophers) {
+        philosopher.join();
+    }
+    return 0;
+    }
