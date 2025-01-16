@@ -1,0 +1,81 @@
+#include <iostream> 
+#include <vector> 
+#include <string> 
+#include <fstream> 
+#include <thread> 
+#include <mutex> 
+#include <chrono> 
+#include <fstream> 
+#include <algorithm>
+#include <sstream> 
+using namespace std;
+
+
+int main() {
+    vector<int> numbers = {1, 2, 3, 4, 5};
+    for_each(numbers.begin(), numbers.end(), [](int& n) { 
+        n *= 2; 
+    });
+    for (const auto& n : numbers) {
+        cout << n << " " << endl;
+    }
+    
+    vector<int> numbers2 = {1, 2, 3, 4, 5};
+    int addNumber = 5;
+    for_each(numbers2.begin(), numbers2.end(), [addNumber](int& m) {
+        m += addNumber; 
+    });
+    for (const auto& m : numbers) {
+        cout << m << " " << endl;
+    }
+
+    vector<int> numbers3 = {1, 2, 3, 4, 5};
+    int value = 10;
+    for_each(numbers3.begin(), numbers3.end(), [&value](int& r) { 
+        r += value; 
+    });
+    for (const auto& r : numbers) {
+        cout << r << " " << endl;
+    }
+    
+    vector<int> numbers4 = {1, 2, 3, 4, 5};
+    int evenCount = 0;
+    for_each(numbers4.begin(), numbers4.end(), [&evenCount](int t) { 
+        if(t % 2 == 0){
+            evenCount++;} 
+    });
+    for (const auto& t : numbers) {
+        cout << t << " " << endl;
+    }
+
+    sort(numbers.begin(), numbers.end());
+
+    int targetValue = 3;
+    auto it = find(numbers.begin(), numbers.end(), targetValue);
+    if (it != numbers.end()) {
+        cout << "Найден элемент: " << *it << endl;
+    } else {
+        cout << "Элемент не найден." << endl;
+    }
+
+    int targetValue2 = 2;
+    auto it2 = find(numbers.rbegin(), numbers.rend(), targetValue2);
+    if (it2 != numbers.rend()) {
+        cout << "Найден элемент с конца: " << *it2 << endl;
+    } else {
+        cout << "Элемент не найден." << endl;
+    }
+
+    numbers.erase(unique(numbers.begin(), numbers.end()), numbers.end());
+
+    reverse(numbers.begin(), numbers.end());
+
+    int threshold = 2;
+    bool allGreater = all_of(numbers.begin(), numbers.end(), [threshold](int n){ 
+        return n > threshold; 
+});
+    cout << "Все элементы больше " << threshold << ": " << (allGreater ? "да" : "нет") << endl;
+
+    
+    return 0;
+}
