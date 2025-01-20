@@ -1,0 +1,29 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+
+int main() {
+    vector<int> vec = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    reverse(vec.begin(), vec.end());
+    cout << "Инвертированный порядок элементов: ";
+    for (int num : vec) {
+        cout << num << " ";
+    }
+    cout << endl;
+    int threshold = 0; 
+    bool all_greater = all_of(vec.begin(), vec.end(), [threshold](int num) {
+        return num > threshold;
+    });
+    cout << "Все элементы больше " << threshold << ": " << (all_greater ? "Да" : "Нет") << endl;
+    auto it = find_if(vec.begin(), vec.end(), [](int num) {
+        return num % 3 == 0;
+    });
+    if (it != vec.end()) {
+        cout << "Первый элемент, который делится на 3: " << *it << endl;
+    } else {
+        cout << "Нет элементов, которые делятся на 3." << endl;
+    }
+    return 0;
+}
