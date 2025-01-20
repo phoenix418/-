@@ -1,0 +1,32 @@
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <vector>
+#include <chrono>
+using namespace std;
+const int NUM_PHILOSOPHERS = 5;
+mutex mtx;
+
+
+void philosopher(int id) {
+    while (true) {
+        cout << "Философ " << id << " думает покушать." << endl;
+        this_thread::sleep_for(chrono::milliseconds(1000));
+        lock_guard<mutex> lock(mtx); 
+        cout << "Философ " << id << " кушает." << endl;
+        this_thread::sleep_for(chrono::milliseconds(1000));
+        cout << "Философ " << id << " закончил кушать." << endl;
+    }
+}
+
+
+int main() {
+    vector<thread> philosophers;
+    for (int i = 0; i < NUM_PHILOSOPHERS; ++i) {
+        philosophers.emplace_back(philosopher, i);
+    }
+    for (auto& philosopher_thread : philosophers) {
+        philosopher_thread.join(); 
+    }
+    return 0;
+}
