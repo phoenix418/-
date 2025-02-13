@@ -1,0 +1,175 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+class Account {
+private:
+    string owner;
+    double balance;
+
+public:
+    Account(const string& owner = "", double balance = 0.0) : owner(owner), balance(balance) {}
+
+
+    bool withdraw(double amount) {
+        if (amount <= balance) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+
+
+    void deposit(double amount) {
+        balance += amount;
+    }
+
+
+    double getBalance() const {
+        return balance;
+    }
+
+
+    string getOwner() const {
+        return owner;
+    }
+};
+
+
+class Transaction {
+public:
+
+
+    bool transfer(Account& from, Account& to, double amount) {
+        if (from.withdraw(amount)) {
+            to.deposit(amount);
+            return true;
+        }
+        return false;
+    }
+};
+
+
+class Bank {
+private:
+    Account accounts[2];
+
+public:
+
+
+    Bank() {
+        accounts[0] = Account("Илья", 2000.0);
+        accounts[1] = Account("Максим", 5000.0);
+    }
+
+
+    int login(string& username) {
+        for (int i = 0; i < 2; ++i) {
+            if (accounts[i].getOwner() == username) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
+    void displayBalance(int index) {
+        if (index != -1) {
+            cout << "Баланс " << accounts[index].getOwner() << ": " << accounts[index].getBalance() << "\n";
+        }
+    }
+
+
+    void performTransfer(int fromIndex, int toIndex, double amount) {
+        if (fromIndex != -1 && toIndex != -1) {
+            Account& from = accounts[fromIndex];
+            Account& to = accounts[toIndex];
+            cout << "Инициация перевода " << amount << " от "
+                 << from.getOwner() << " к " << to.getOwner() << ".\n";
+            Transaction transaction;
+            if (transaction.transfer(from, to, amount)) {
+                cout << "Перевод успешен.\n";
+                displayBalance(fromIndex);
+                displayBalance(toIndex);
+            } 
+            else {
+                cout << "Перевод не удался: недостаточно средств.\n";
+            }
+        } 
+        else {
+            cout << "Один из пользователей не найден.\n";
+        }
+    }
+
+
+    int getUserIndex() {
+        string username;
+        cout << "Введите имя пользователя для входа: ";
+        cin >> username;
+        return login(username);
+    }
+
+
+    int getRecipientIndex() {
+        string toUsername;
+        cout << "Введите имя пользователя для перевода: ";
+        cin >> toUsername;
+        return login(toUsername);
+    }
+
+
+    double getTransferAmount() {
+        double amount;
+        cout << "Введите сумму для перевода: ";
+        cin >> amount;
+        return amount;
+    }
+
+
+    void execute() {
+        int userIndex = getUserIndex();
+        if (userIndex != -1) {
+            cout << "Успешный вход!\n";
+            displayBalance(userIndex);
+            Userchoice(userIndex);
+        } else {
+            cout << "Ошибка входа: пользователь не найден.\n";
+        }
+    }
+
+
+    void Userchoice(int userIndex) {
+        int choice;
+        do {
+            cout << "Выберите действие: \n1. Показать баланс\n2. Перевести средства\n3. Выйти\n";
+            cin >> choice;
+
+            switch (choice) {
+                case 1:
+                    displayBalance(userIndex);
+                    break;
+                case 2: {
+                    int toIndex = getRecipientIndex();
+                    double amount = getTransferAmount();
+                    performTransfer(userIndex, toIndex, amount);
+                    break;
+                }
+                case 3:
+                    cout << "Выход.\n";
+                    break;
+                default:
+                    cout << "Неверный выбор. Попробуйте снова.\n";
+                    break;
+            }
+        } 
+        while (choice != 3);
+    }
+};
+
+
+int main() {
+    Bank bank;
+    bank.execute();
+    return 0;
+}
