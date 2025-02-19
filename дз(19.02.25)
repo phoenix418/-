@@ -1,0 +1,128 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+class FileSystemComponent {
+public:
+    virtual string getName() = 0;
+    virtual void display(int indent) = 0;
+    virtual ~FileSystemComponent() = default;
+};
+
+
+class OldLogger {
+public:
+    void logMessage(string message) {
+        cout << "Old Logger: " << message << endl;
+    }
+};
+
+
+class ILogger {
+public:
+    virtual void log(string level, string message);
+};
+
+
+class File : public FileSystemComponent {
+private:
+    string name;
+
+public:
+    File(string& fileName) : name(fileName) {}
+
+
+    string getName() override {
+        return name;
+    }
+
+
+    void display(int indent = 0) override {
+        for (int i = 0; i < indent; i++) cout << "  ";
+        cout << "- " << name << endl;
+    }
+};
+
+
+class Directory : public FileSystemComponent {
+private:
+    string name;
+    vector<FileSystemComponent*> children;
+
+public:
+    Directory(string& dirName) : name(dirName) {}
+
+
+    ~Directory() {
+        for (auto* child : children) {
+            delete child;
+        }
+    }
+
+
+    string getName() override {
+        return name;
+    }
+
+
+    void add(FileSystemComponent* component) {    
+        children.push_back(component); 
+    }
+
+
+    void display(int indent = 0) override {
+        for (int i = 0; i < indent; i++) cout << "  ";
+        cout << "+ " << name << endl;
+        for (auto& child : children) {
+            child->display(indent + 1);
+        }
+    }
+};
+
+
+class LoggerAdapter : public ILogger {
+private:
+    OldLogger* oldLogger;
+
+public:
+    LoggerAdapter(OldLogger* logger) : oldLogger(logger) {}
+
+
+    void log(string level, string message) override {
+        string formattedMessage = "[" + level + "] " + message;
+        oldLogger->logMessage(formattedMessage);
+    }
+};
+
+
+int main() {
+    string sys32 = "system32";
+    string add = "addate";
+    string win = "windows";
+    string win99 = "windows99";
+    string login = "login_ru";
+    string dat = "data";
+    auto system32 = new Directory(sys32);
+    auto addate = new Directory(add);
+    auto windows = new Directory(win);
+    auto windows99 = new File(win99);
+    auto login_ru = new File(login);
+    auto data = new File(dat);
+    system32->add(login_ru);
+    addate->add(data);
+    windows->add(windows99);
+    system32->display();
+    cout << endl;
+    addate->display();
+    cout << endl;
+    windows->display();
+    ////////
+    OldLogger oldLogger;
+    LoggerAdapter loggerAdapter(&oldLogger);
+    loggerAdapter.log("INFO", "This is an info message.");
+    loggerAdapter.log("ERROR", "This is an error message.");
+    loggerAdapter.log("DEBUG", "This is a debug message.");
+
+    return 0;
+}
