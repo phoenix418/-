@@ -1,4 +1,96 @@
 #include <iostream>
+#include <fstream>
+#include <vector>
+using namespace std;
+
+struct Employee {
+    string name;
+    double hourlyRate;
+    int hoursWorked;
+};
+vector<Employee> EMPLOYEES;
+
+
+class AddEmployee {
+public:
+    void addEmployee(const string& name, double hourlyRate, int hoursWorked) {
+        EMPLOYEES.push_back({ name, hourlyRate, hoursWorked });
+    }
+};
+
+
+class CalculateEmployee {
+public:
+    double calculateSalary(const string& name) {
+        for (const auto& emp : EMPLOYEES) {
+            if (emp.name == name) {
+                return emp.hourlyRate * emp.hoursWorked;
+            }
+        }
+        return 0.0;
+    }
+};
+    
+
+class saveToEmployee {
+public:
+    void saveToFile(const string& filename) {
+        std::ofstream file(filename);
+        if (file.is_open()) {
+            for (const auto& emp : EMPLOYEES) {
+                file << emp.name << "," << emp.hourlyRate << "," << emp.hoursWorked << "\n";
+            }
+            file.close();
+        }
+    }
+};
+    
+
+
+int main() {
+    AddEmployee  ad;
+    CalculateEmployee ae;
+    saveToEmployee se;
+    ad.addEmployee("Alice", 20.0, 40);
+    ad.addEmployee("Bob", 25.0, 35);
+    cout << "Alice's salary: " << ae.calculateSalary("Alice") << endl;
+    se.saveToFile("employees.txt");
+    return 0;
+}
+
+///////////////////////
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+
+class Product {
+public:
+    string name;
+    double price;
+
+    Product(string n, double p) : name(n), price(p) {}
+};
+
+class DiscountManager {
+public:
+    double applyDiscount(const Product& product, double discountType) {
+        return product.price* discountType;
+    }
+};
+
+int main() {
+    Product laptop("Laptop", 1000);
+    Product phone("Phone", 500);
+    DiscountManager discountManager;
+    cout << "Laptop with Seasonal discount: $" << discountManager.applyDiscount(laptop,0.9 ) << endl;
+    cout << "Phone with Black Friday discount: $" << discountManager.applyDiscount(phone,0.7) << endl;
+    return 0;
+}
+
+///////////////////////
+#include <iostream>
 using namespace std;
 
 class Shape {
