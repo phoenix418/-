@@ -1,0 +1,69 @@
+#include <iostream>
+using namespace std;
+
+class Shape {
+private:
+    int width, height;
+
+public:
+    virtual void setWidth(int w) {
+        width = w;
+    }
+
+
+    virtual void setHeight(int h) {
+        height = h;
+    }
+
+
+    virtual int area() const {
+        return width * height;
+    }
+};
+
+
+class Rectangle : public Shape {
+public:
+    Rectangle(int w, int h) {
+        setWidth(w); 
+        setHeight(h);
+    }
+};
+
+class Square : public Shape { 
+public:
+    Square(int size) {
+        setWidth(size); 
+        setHeight(size);
+    }
+
+
+    void setWidth(int w) override {
+        Shape::setWidth(w); 
+        Shape::setHeight(w); 
+    }
+
+
+    void setHeight(int h) override {
+        Shape::setHeight(h); 
+        Shape::setWidth(h); 
+    }
+};
+
+
+void printArea(Shape& shape) {
+    shape.setWidth(10);
+    shape.setHeight(5);
+    cout << "Expected area: " << (10 * 5) << ", Actual area: " << shape.area() << endl;
+}
+
+
+int main() {
+    Rectangle rect(4, 6);
+    Square square(4);
+    printArea(rect);
+    printArea(square);
+    return 0;
+}
+
+
