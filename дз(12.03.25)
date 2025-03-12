@@ -1,0 +1,40 @@
+using System;
+using System.Windows.Forms;
+
+namespace WindowsFormsApp2
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+       
+        private void buttonAdd_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtTask.Text))
+            {
+                listBoxTasks.Items.Add(txtTask.Text);
+                txtTask.Clear();
+            }
+            else
+            {
+                MessageBox.Show("Введите задачу!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        
+        private void buttonDelete_Click(object sender, EventArgs e)
+        {
+            if (listBoxTasks.SelectedItem != null)
+            {
+                listBoxTasks.Items.Remove(listBoxTasks.SelectedItem);
+            }
+            else
+            {
+                MessageBox.Show("Выберите задачу для удаления!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+    }
+}
