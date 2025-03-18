@@ -1,0 +1,62 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using ConsoleApp5;
+
+
+
+namespace ConsoleApp5
+{
+    class Program
+    {
+        static void DrawSquare(int sideLength, char bol)
+        {
+            for (int i = 0; i < sideLength; i++)
+            {
+                for (int j = 0; j < sideLength; j++)
+                {
+                    Console.Write(bol + " ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+
+        static bool IsPalindrome(int number)
+        {
+            string strNumber = number.ToString();
+            char[] reversedArray = strNumber.ToCharArray();
+            Array.Reverse(reversedArray);
+            string reversedNumber = new string(reversedArray);
+            return strNumber == reversedNumber;
+        }
+
+
+        static int[] FilterArray(int[] originalArray, int[] filterArray)
+        {
+            return Array.FindAll(originalArray, element => Array.IndexOf(filterArray, element) == -1);
+        }
+
+
+        static void Main(string[] args)
+        {
+
+            Console.WriteLine("Задание 1: Отображение квадрата");
+            DrawSquare(5, '*');
+            Console.WriteLine("\nЗадание 2: Проверка на палиндром");
+            Console.WriteLine(IsPalindrome(1221));
+            Console.WriteLine(IsPalindrome(3443));
+            Console.WriteLine(IsPalindrome(7854));
+            Console.WriteLine("\nЗадание 3: Фильтрация массива");
+            int[] originalArray = { 1, 2, 6, -1, 88, 7, 6 };
+            int[] filterArray = { 6, 88, 7 };
+            int[] filteredArray = FilterArray(originalArray, filterArray);
+            Console.WriteLine(string.Join(", ", filteredArray));
+        }
+    }
+}
+
+
+
