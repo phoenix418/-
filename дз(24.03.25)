@@ -1,0 +1,246 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using ConsoleApp2;
+
+
+
+namespace ConsoleApp2
+{
+    using System;
+    using System.Collections.Generic;
+
+    
+    public abstract class GeometricFigure
+    {
+
+        public abstract double GetArea();
+
+       
+        public abstract double GetPerimeter();
+    }
+
+   
+    public class Triangle : GeometricFigure
+    {
+        private double a, b, c; 
+
+        public Triangle(double a, double b, double c)
+        {
+            this.a = a;
+            this.b = b;
+            this.c = c;
+        }
+
+        public override double GetArea()
+        {
+            double semiPerimeter = (a + b + c) / 2;
+            return Math.Sqrt(semiPerimeter * (semiPerimeter - a) * (semiPerimeter - b) * (semiPerimeter - c));
+        }
+
+        public override double GetPerimeter()
+        {
+            return a + b + c;
+        }
+    }
+
+
+    public class Square : GeometricFigure
+    {
+        private double side; 
+
+        public Square(double side)
+        {
+            this.side = side;
+        }
+
+        public override double GetArea()
+        {
+            return side * side;
+        }
+
+        public override double GetPerimeter()
+        {
+            return 4 * side;
+        }
+    }
+
+    public class Rhombus : GeometricFigure
+    {
+        private double side;
+        private double height; 
+
+        public Rhombus(double side, double height)
+        {
+            this.side = side;
+            this.height = height;
+        }
+
+        public override double GetArea()
+        {
+            return side * height;
+        }
+
+        public override double GetPerimeter()
+        {
+            return 4 * side;
+        }
+    }
+
+   
+    public class Rectangle : GeometricFigure
+    {
+        private double width, height;
+
+        public Rectangle(double width, double height)
+        {
+            this.width = width;
+            this.height = height;
+        }
+
+        public override double GetArea()
+        {
+            return width * height;
+        }
+
+        public override double GetPerimeter()
+        {
+            return 2 * (width + height);
+        }
+    }
+
+    
+    public class Parallelogram : GeometricFigure
+    {
+        private double baseLength, height;
+
+        public Parallelogram(double baseLength, double height)
+        {
+            this.baseLength = baseLength;
+            this.height = height;
+        }
+
+        public override double GetArea()
+        {
+            return baseLength * height;
+        }
+
+        public override double GetPerimeter()
+        {
+            return 2 * (baseLength + height); 
+        }
+    }
+
+    
+    public class Trapezoid : GeometricFigure
+    {
+        private double a, b, height; 
+
+        public Trapezoid(double a, double b, double height)
+        {
+            this.a = a;
+            this.b = b;
+            this.height = height;
+        }
+
+        public override double GetArea()
+        {
+            return ((a + b) / 2) * height;
+        }
+
+        public override double GetPerimeter()
+        {
+            return 0;
+        }
+    }
+
+
+    public class Circle : GeometricFigure
+    {
+        private double radius; 
+
+        public Circle(double radius)
+        {
+            this.radius = radius;
+        }
+
+        public override double GetArea()
+        {
+            return Math.PI * radius * radius;
+        }
+
+        public override double GetPerimeter()
+        {
+            return 2 * Math.PI * radius;
+        }
+    }
+
+    public class Ellipse : GeometricFigure
+    {
+        private double semiMajorAxis, semiMinorAxis; 
+
+        public Ellipse(double semiMajorAxis, double semiMinorAxis)
+        {
+            this.semiMajorAxis = semiMajorAxis;
+            this.semiMinorAxis = semiMinorAxis;
+        }
+
+        public override double GetArea()
+        {
+            return Math.PI * semiMajorAxis * semiMinorAxis;
+        }
+
+        public override double GetPerimeter()
+        {
+            return Math.PI * (3 * (semiMajorAxis + semiMinorAxis) -
+                Math.Sqrt((3 * semiMajorAxis + semiMinorAxis) * (semiMajorAxis + 3 * semiMinorAxis)));
+        }
+    }
+
+    public class CompositeFigure : GeometricFigure
+    {
+        private List<GeometricFigure> figures;
+
+        public CompositeFigure()
+        {
+            figures = new List<GeometricFigure>();
+        }
+
+        public void AddFigure(GeometricFigure figure)
+        {
+            figures.Add(figure);
+        }
+
+        public override double GetArea()
+        {
+            double totalArea = 0;
+            foreach (var figure in figures)
+            {
+                totalArea += figure.GetArea();
+            }
+            return totalArea;
+        }
+
+        public override double GetPerimeter()
+        {
+            return 0;
+        }
+    }
+
+   
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CompositeFigure compositeFigure = new CompositeFigure();
+            compositeFigure.AddFigure(new Triangle(3, 4, 5));
+            compositeFigure.AddFigure(new Rectangle(2, 5));
+            compositeFigure.AddFigure(new Circle(3));
+
+            Console.WriteLine("Общая площадь составной фигуры: " + compositeFigure.GetArea());
+        }
+    }
+}
