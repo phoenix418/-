@@ -1,0 +1,127 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
+using ConsoleApp4;
+using static System.Console;
+
+namespace ConsoleApp4
+{
+    using System;
+
+    abstract class Storage
+    {
+        protected string Name { get; set; }
+        protected string Model { get; set; }
+
+        public Storage(string name, string model)
+        {
+            Name = name;
+            Model = model;
+        }
+
+        public abstract double GetMemorySize();
+        public abstract double GetFreeSpace();
+        public abstract double GetCopyTime(double dataSize);
+        public abstract string GetInfo();
+    }
+
+    class Flash : Storage
+    {
+        private double speed;
+        private double memorySize;
+
+        public Flash(string name, string model, double speed, double memorySize) : base(name, model)
+        {
+            this.speed = speed;
+            this.memorySize = memorySize;
+        }
+
+        public override double GetMemorySize() => memorySize;
+
+        public override double GetFreeSpace() => memorySize;
+
+        public override double GetCopyTime(double dataSize) => dataSize / speed;
+
+        public override string GetInfo() => ($"Flash: {Name}, Model: {Model}, Memory: {memorySize} Гб, Speed: {speed} Мб/с");
+
+    }
+
+    class DVD : Storage
+    {
+        private double readWriteSpeed;
+        private double memorySize;
+        private bool isDualLayer;
+
+        public DVD(string name, string model, double readWriteSpeed, bool isDualLayer) : base(name, model)
+        {
+            this.readWriteSpeed = readWriteSpeed;
+            this.isDualLayer = isDualLayer;
+            memorySize = isDualLayer ? 9 : 4.7;
+        }
+
+        public override double GetMemorySize() => memorySize;
+
+        public override double GetFreeSpace() => memorySize;
+
+        public override double GetCopyTime(double dataSize) => dataSize / readWriteSpeed;
+
+        public override string GetInfo() => $"DVD: {Name}, Model: {Model}, Memory: {memorySize} Гб, Speed: {readWriteSpeed} Мб/с, Type: {(isDualLayer ? "Dual Layer" : "Single Layer")}";
+    }
+
+    class HDD : Storage
+    {
+        private double speed;
+        private double memorySize;
+        private int partitions;
+
+        public HDD(string name, string model, double speed, double memorySize, int partitions) : base(name, model)
+        {
+            this.speed = speed;
+            this.memorySize = memorySize;
+            this.partitions = partitions;
+        }
+
+        public override double GetMemorySize() => memorySize;
+
+        public override double GetFreeSpace() => memorySize;
+
+        public override double GetCopyTime(double dataSize) => dataSize / speed;
+
+        public override string GetInfo() => $"HDD: {Name}, Model: {Model}, Memory: {memorySize} Гб, Speed: {speed} Мб/с, Partitions: {partitions}";
+    }
+
+    class BackupApp
+    {
+        static void Main()
+        {
+            Storage[] storages = new Storage[]
+            {
+            new Flash("SanDisk", "Ultra", 100, 64),
+            new DVD("Verbatim", "DVD-R", 16, false),
+            new HDD("Seagate", "Expansion", 80, 2000, 1)
+            };
+
+            double totalDataSize = 565;
+            double fileSize = 0.780;
+            double totalMemory = 0;
+            foreach (var storage in storages)
+            {
+                totalMemory += storage.GetMemorySize();
+                WriteLine(storage.GetInfo());
+            }
+
+            WriteLine($"Общий объем памяти всех устройств: {totalMemory} Гб");
+            int requiredDrives = (int)Math.Ceiling(totalDataSize / fileSize);
+            WriteLine($"Необходимое количество носителей для переноса {totalDataSize} Гб: {requiredDrives}");
+            foreach (var storage in storages)
+            {
+                double copyTime = storage.GetCopyTime(totalDataSize * 1024);
+                WriteLine($"Время копирования на {storage.GetInfo()}: {copyTime / 60} минут");
+            }
+        }
+    }
+}
+    
