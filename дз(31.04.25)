@@ -1,0 +1,244 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
+using ConsoleApp3;
+using static System.Console;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace ConsoleApp3
+{ 
+    public class ComplexNumber
+    {
+        public double Real { get; set; }
+        public double Imaginary { get; set; }
+
+        public ComplexNumber(double real, double imaginary)
+        {
+            Real = real;
+            Imaginary = imaginary;
+        }
+
+        public static ComplexNumber operator *(ComplexNumber a, ComplexNumber b)
+        {
+            return new ComplexNumber(
+                a.Real * b.Real - a.Imaginary * b.Imaginary,
+                a.Real * b.Imaginary + a.Imaginary * b.Real
+            );
+        }
+
+        public static ComplexNumber operator /(ComplexNumber a, ComplexNumber b)
+        {
+            double denominator = b.Real * b.Real + b.Imaginary * b.Imaginary;
+            return new ComplexNumber(
+                (a.Real * b.Real + a.Imaginary * b.Imaginary) / denominator,
+                (a.Imaginary * b.Real - a.Real * b.Imaginary) / denominator
+            );
+        }
+
+        public override string ToString()
+        {
+            return $"{Real} + {Imaginary}i";
+        }
+    }
+
+    public struct Coefficient
+    {
+        public int num { get; set; }
+        public int coef { get; set; }
+        public Coefficient(int a, int b)
+        {
+            num = a;
+            coef = b;
+        }
+
+        public static Coefficient operator +(Coefficient a, Coefficient b)
+        {
+            return new Coefficient(a.num + b.num, a.coef + b.coef);
+        }
+
+        public override string ToString()
+        {
+            return $"{num} A + {coef} B ";
+        }
+
+    }
+
+    public class Fraction
+    {
+        private int numerator;   
+        private int denominator; 
+
+        public Fraction(int numerator, int denominator)
+        {  
+            this.numerator = numerator;
+            this.denominator = denominator;
+            Simplify();
+        }
+
+        
+        private void Simplify()
+        {
+            int gcd = GCD(Math.Abs(numerator), Math.Abs(denominator));
+            numerator /= gcd;
+            denominator /= gcd;    
+            if (denominator < 0)
+            {
+                numerator = -numerator;
+                denominator = -denominator;
+            }
+        }
+
+      
+        private int GCD(int a, int b)
+        {
+            while (b != 0)
+            {
+                int temp = b;
+                b = a % b;
+                a = temp;
+            }
+            return a;
+        }
+
+        
+        public static Fraction operator +(Fraction f1, Fraction f2)
+        {
+            return new Fraction(f1.numerator * f2.denominator + f2.numerator * f1.denominator, f1.denominator * f2.denominator);
+        }
+
+        public static Fraction operator -(Fraction f1, Fraction f2)
+        {
+            return new Fraction(f1.numerator * f2.denominator - f2.numerator * f1.denominator, f1.denominator * f2.denominator);
+        }
+
+        public static Fraction operator *(Fraction f1, Fraction f2)
+        {
+            return new Fraction(f1.numerator * f2.numerator, f1.denominator * f2.denominator);
+        }
+
+        public static Fraction operator /(Fraction f1, Fraction f2)
+        {
+            return new Fraction(f1.numerator * f2.denominator, f1.denominator * f2.numerator);
+        }
+
+        public static bool operator ==(Fraction f1, Fraction f2)
+        {
+            return f1.numerator == f2.numerator && f1.denominator == f2.denominator;
+        }
+
+        public static bool operator !=(Fraction f1, Fraction f2)
+        {
+            return !(f1 == f2);
+        }
+
+        public static bool operator <(Fraction f1, Fraction f2)
+        {
+            return f1.numerator * f2.denominator < f2.numerator * f1.denominator;
+        }
+
+        public static bool operator >(Fraction f1, Fraction f2)
+        {
+            return f1.numerator * f2.denominator > f2.numerator * f1.denominator;
+        }
+
+        public static implicit operator Fraction(double d)
+        {
+            string[] parts = d.ToString().Split('.');
+            int numerator = (int)(d * Math.Pow(10, parts[1].Length));
+            int denominator = (int)Math.Pow(10, parts[1].Length);
+            return new Fraction(numerator, denominator);
+        }
+        
+        public static Fraction operator +(Fraction f, double d)
+        {
+            return f + (Fraction)d;
+        }
+
+        public override string ToString()
+        {
+            return $"{numerator}/{denominator}";
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Fraction other)
+                return this == other;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return (numerator, denominator).GetHashCode();
+        }
+
+        public bool IsProper => Math.Abs(numerator) < denominator; 
+        public bool IsImproper => Math.Abs(numerator) > denominator;
+    }
+
+    class Program
+    {
+
+        public static bool SolveSystem(double A1, double B1, double A2, double B2, out double X, out double Y)
+        {
+            double det = A1 * B2 - A2 * B1;
+            if (det == 0)
+            {
+                
+                X = Y = double.NaN;
+                return false;
+            }
+ 
+            X = (0 * B2 - 0 * B1) / det;
+            Y = (A1 * 0 - A2 * 0) / det; 
+            return true;
+        }
+
+        public static void calculete(Coefficient A, Coefficient B)
+        {
+            Coefficient sum = A + B;
+            Console.WriteLine(sum.ToString());
+        }
+
+        static void Main()
+        {
+            ComplexNumber a = new ComplexNumber(2, 3);
+            ComplexNumber b = new ComplexNumber(1, 2);
+            WriteLine($"a = {a}");
+            WriteLine($"b = {b}");
+            ComplexNumber product = a * b;
+            ComplexNumber quotient = a / b;
+            WriteLine($"a * b = {product}");
+            WriteLine($"a / b = {quotient}");
+            Coefficient A = new Coefficient(3, 4);
+            Coefficient B = new Coefficient(6, 2);
+            calculete(A, B);
+            double A1 = 1, B1 = 2, A2 = 3, B2 = 4;
+            if (SolveSystem(A1, B1, A2, B2, out double X, out double Y))
+            {
+                WriteLine($"Решение системы: X = {X}, Y = {Y}");
+            }
+            else
+            {
+                WriteLine("Система не имеет решения.");
+            }
+            Fraction f = new Fraction(3, 4);
+            int r = 10;
+            Fraction f1 = f * r;
+            Fraction f2 = r * f;
+            double d = 1.5;
+            Fraction f3 = f + d;
+
+            Console.WriteLine($"f: {f}");
+            Console.WriteLine($"f1: {f1}");
+            Console.WriteLine($"f2: {f2}");
+            Console.WriteLine($"f3: {f3}");
+        }
+        
+    }
+}
+
+
+;
