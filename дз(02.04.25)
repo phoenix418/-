@@ -1,0 +1,232 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
+using ConsoleApp3;
+using static System.Console;
+
+
+namespace ConsoleApp3
+{
+    public class Employee : IComparable<Employee>
+    {
+        public string Name { get; set; }
+        public int Salary { get; set; }
+
+        public Employee(string name, int salary)
+        {
+            Name = name;
+            Salary = salary;
+        }
+
+        public int CompareTo(Employee other)
+        {  
+            return Salary.CompareTo(other.Salary);
+        }
+
+        public override string ToString()
+        {
+            return $"{Name}, Зарплата: {Salary:C}";
+        }
+    }
+
+    public class Book
+    {
+        public string Title { get; set; }
+        public string Author { get; set; }
+
+        public Book(string title, string author)
+        {
+            Title = title;
+            Author = author;
+        }
+
+        public override string ToString()
+        {
+            return $"{Title} - {Author}";
+        }
+    }
+
+    public class Library : IEnumerable<Book>
+    {
+        private List<Book> books = new List<Book>();
+
+        public void AddBook(Book book)
+        {
+            books.Add(book);
+        }
+
+        public Book FindBook(string title)
+        {
+            foreach (var book in books)
+            {
+                if (book.Title.Equals(title, StringComparison.OrdinalIgnoreCase))
+                {
+                    return book; 
+                }
+            }
+            return null; 
+        }
+
+        public IEnumerator<Book> GetEnumerator()
+        {
+            return books.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
+
+    public class Session : IDisposable
+    {
+        public Session()
+        {
+            Console.WriteLine("Сессия началась");
+        }
+
+        public void PerformOperations()
+        {
+           
+            Console.WriteLine("сдача сессии учениками ");
+          
+            for (int i = 1; i <= 5; i++)
+            {
+                Console.WriteLine($"ученик номер {i}");
+            }
+        }
+
+        public void Dispose()
+        {
+            Console.WriteLine("Сессия завершена");
+            GC.SuppressFinalize(this);
+        }
+    }
+
+    public class Shape : ICloneable
+    {
+        public string ShapeType { get; set; }
+        public double Size { get; set; }
+
+        public Shape(string shapeType, double size)
+        {
+            ShapeType = shapeType;
+            Size = size;
+        }
+
+        public object Clone()
+        {
+            return new Shape(ShapeType, Size);
+        }
+
+        public override string ToString()
+        {
+            return $"{ShapeType} с размером {Size}";
+        }
+    }
+
+    public class Student : IEquatable<Student>
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        public Student(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+
+        public bool Equals(Student other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+            return Id == other.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return $"ID: {Id}, Имя: {Name}";
+        }
+    }
+
+    class Program
+    {
+        static void Main()
+        {
+            List<Employee> employees = new List<Employee>
+        {
+            new Employee("Иван", 50000),
+            new Employee("Мария", 75000),
+            new Employee("Петр", 30000),
+            new Employee("Анна", 60000)
+        };
+            employees.Sort();
+            WriteLine("Сотрудники по возрастанию зарплаты:");
+            foreach (var employee in employees)
+            {
+                WriteLine(employee);
+            }
+            Library library = new Library();
+            library.AddBook(new Book("Убить пересмешника", "Харпер Ли"));
+            library.AddBook(new Book("1984", "Джордж Оруэлл"));
+            library.AddBook(new Book("Гордость и предубеждение", "Джейн Остен"));
+
+            WriteLine("Книги в библиотеке:");
+            foreach (var book in library)
+            { 
+                WriteLine(book);
+            }
+
+            string searchTitle = "1984";
+            var foundBook = library.FindBook(searchTitle);
+            WriteLine($"Найдена книга: {foundBook}");
+            using (Session session = new Session())
+            {
+                session.PerformOperations(); 
+            }
+          
+            WriteLine("Программа завершена.");
+            Shape originalShape = new Shape("Круг", 10);
+            Shape clonedShape = (Shape)originalShape.Clone();
+
+            WriteLine("Оригинал: " + originalShape);
+            WriteLine("Копия: " + clonedShape);
+            clonedShape.Size = 15;
+            WriteLine("После изменения копии:");
+            WriteLine("Оригинал: " + originalShape);
+            WriteLine("Копия: " + clonedShape);
+            List<Student> students = new List<Student>
+        {
+            new Student(1, "Алексей"),
+            new Student(2, "Светлана"),
+            new Student(3, "Михаил"),
+            new Student(4, "Ольга")
+        };
+
+            Student searchStudent = new Student(2, "Светлана");
+
+            Student foundStudent = null; 
+
+            foreach (var student in students) 
+            {
+                if (student.Equals(searchStudent)) 
+                {
+                    foundStudent = student; 
+                    break; 
+                }
+            }
+            WriteLine(foundStudent != null ? $"Найден студент: {foundStudent}" : "Студент не найден.");
+        }
+    }
+}
