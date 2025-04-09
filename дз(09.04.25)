@@ -1,0 +1,140 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
+using ConsoleApp3;
+
+namespace ConsoleApp3
+{
+    class Person
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+
+        public Person(string name, int age)
+        {
+            Name = name;
+            Age = age;
+        }
+    }
+
+    class Book
+    {
+        public string Title { get; set; }
+        public string Author { get; set; }
+        public int Year { get; set; }
+
+        public Book(string title, string author, int year)
+        {
+            Title = title;
+            Author = author;
+            Year = year;
+        }
+    }
+
+    class VotingSystem
+    {
+        private Dictionary<string, int> votes = new Dictionary<string, int>();
+
+        public void AddVote(string candidate)
+        {
+            if (votes.ContainsKey(candidate))
+                votes[candidate]++;
+            else
+                votes[candidate] = 1;
+        }
+
+        public void PrintResults()
+        {
+            foreach (var kvp in votes)
+            {
+                Console.WriteLine($"{kvp.Key}: {kvp.Value}");
+            }
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<Person> people = new List<Person>
+        {
+            new Person("Алиса", 20),
+            new Person("Боб", 17),
+            new Person("Чарли", 22)
+        };
+            Console.WriteLine("Люди старше 18:");
+            foreach (var person in people)
+            {
+                if (person.Age > 18)
+                {
+                    Console.WriteLine(person.Name);
+                }
+            }
+            List<int> numbers = new List<int> { 1, 2, 2, 3 };
+            List<int> uniqueNumbers = GetUniqueValues(numbers);
+            Console.WriteLine("Уникальные значения: " + string.Join(", ", uniqueNumbers));
+            List<double> grades = new List<double> { 85.0, 92.0, 76.0, 88.0 };
+            double average = grades.Average();
+            Console.WriteLine("Средняя оценка: " + average);
+            for (int i = 0; i < grades.Count; i++)
+            {
+                if (grades[i] > average)
+                {
+                    Console.WriteLine("Студент " + (i + 1) + " имеет оценку выше средней: " + grades[i]);
+                }
+            }
+            Dictionary<string, Book> library = new Dictionary<string, Book>
+        {
+            { "978-3-16-148410-0", new Book("Название книги 1", "Автор 1", 2001) },
+            { "978-1-234-56789-7", new Book("Название книги 2", "Автор 2", 2005) }
+        };
+
+            if (library.TryGetValue("978-3-16-148410-0", out Book foundBook))
+            {
+                Console.WriteLine("Найдена книга: " + foundBook.Title + " автор: " + foundBook.Author);
+            }
+            VotingSystem votingSystem = new VotingSystem();
+            votingSystem.AddVote("Кандидат А");
+            votingSystem.AddVote("Кандидат Б");
+            votingSystem.AddVote("Кандидат А");
+            votingSystem.PrintResults();    
+            Queue<string> orders = new Queue<string>();
+            orders.Enqueue("Заказ 1");
+            orders.Enqueue("Заказ 2");
+            Console.WriteLine("Обработка заказов:");
+            while (orders.Count > 0)
+            {
+                Console.WriteLine("Обработка: " + orders.Dequeue());
+            }
+
+            Queue<string> customers = new Queue<string>();
+            customers.Enqueue("Клиент 1");
+            customers.Enqueue("Клиент 2");
+            Console.WriteLine("Обслуживание клиентов:");
+            while (customers.Count > 0)
+            {
+                Console.WriteLine("Обслуживание: " + customers.Dequeue());
+            }
+
+            Queue<string> visitors = new Queue<string>();
+            visitors.Enqueue("Посетитель 1");
+            visitors.Enqueue("Посетитель 2");
+            Console.WriteLine("Следующий посетитель:");
+            while (visitors.Count > 0)
+            {
+                Console.WriteLine("Следующий: " + visitors.Dequeue());
+            }
+        }
+
+        public static List<int> GetUniqueValues(List<int> numbers)
+        {
+            return numbers.Distinct().ToList();
+        }
+    }
+}
+
+
