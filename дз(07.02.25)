@@ -1,0 +1,104 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
+using ConsoleApp3;
+using static System.Console;
+
+namespace ConsoleApp3 {
+    public class PremiyaException : Exception
+    {
+        public PremiyaException(string message) : base(message) { }
+    }
+
+    public class OkladException : Exception
+    {
+        public OkladException(string message) : base(message) { }
+    }
+
+    public class Employee
+    {
+        public string FIO { get; set; }
+        public string Position { get; set; }
+        public decimal Salary { get; set; }
+
+        public virtual decimal CalculateSalary()
+        {
+            return Salary;
+        }
+    }
+
+    public class StaffEmployee : Employee
+    {
+        public decimal Bonus { get; set; }
+
+        public override decimal CalculateSalary()
+        {
+            try
+            {
+                if (Bonus < 0)
+                    throw new PremiyaException("Премия не может быть отрицательной");
+
+                return Salary + Bonus;
+            }
+            catch (PremiyaException ex)
+            {
+                WriteLine(ex.Message);
+                return Salary;
+            }
+        }
+    }
+
+    public class ContractEmployee : Employee
+    {
+        public override decimal CalculateSalary()
+        {
+            try
+            {
+                return Salary;
+            }
+            catch (Exception ex)
+            {
+                WriteLine("Ошибка при расчете зарплаты: " + ex.Message);
+                return 0;
+            }
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            try
+            {
+                StaffEmployee staff = new StaffEmployee
+                {
+                    FIO = "Иванов Иван",
+                    Position = "Менеджер",
+                    Salary = 50000,
+                    Bonus = -1000
+                };
+                WriteLine($"Зарплата {staff.FIO}: {staff.CalculateSalary()}");
+
+                ContractEmployee contract = new ContractEmployee
+                {
+                    FIO = "Петров Петр",
+                    Position = "Разработчик",
+                    Salary = 60000
+                };
+                WriteLine($"Зарплата {contract.FIO}: {contract.CalculateSalary()}");
+            }
+            catch (OkladException ex)
+            {
+                WriteLine("Ошибка: " + ex.Message);
+            }
+
+            ReadLine();
+        }
+    }
+}
+
+
