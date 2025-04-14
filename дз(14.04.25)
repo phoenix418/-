@@ -1,0 +1,80 @@
+using System;
+using System.Buffers;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
+using ConsoleApp3;
+using static System.Console;
+
+
+namespace ConsoleApp3
+{
+
+    class Program
+    {
+        static void nom1()
+        {
+            string input = "Алиса Боб Алиса Чарли Боб"; 
+            Hashtable nameCounts = new Hashtable();
+
+            string[] entries = input.Split(' ');
+
+            foreach (string a in entries)
+            {
+                if (nameCounts.ContainsKey(a))
+                {
+                    nameCounts[a] = (int)nameCounts[a] + 1;
+                }
+                else
+                {
+                    nameCounts[a] = 1;
+                }
+            }
+
+            foreach (DictionaryEntry a in nameCounts)
+            {
+                WriteLine($"{a.Key}: {a.Value}");
+            }
+        }
+
+        static void nom2()
+        {
+            Console.Write("Введите последовательность блоков: ");
+            string input = Console.ReadLine();
+            string result = BuildTower(input);
+            Console.WriteLine($"Итоговая башня: {result}");
+        }
+
+        static string BuildTower(string sequence)
+        {
+            Stack<char> stack = new Stack<char>();
+            foreach (char block in sequence)
+            {
+                if (stack.Count > 0 && stack.Peek() == block)
+                {
+                    stack.Pop(); 
+                }
+                else
+                {
+                    stack.Push(block); 
+                }
+            }
+            char[] towerArray = stack.ToArray();
+            Array.Reverse(towerArray); 
+            return new string(towerArray);
+        }
+
+        static void Main(string[] args)
+        {
+            
+            nom1();
+            nom2();
+        }
+    }
+
+}
