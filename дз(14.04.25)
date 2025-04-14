@@ -21,9 +21,7 @@ namespace ConsoleApp3
         {
             string input = "Алиса Боб Алиса Чарли Боб"; 
             Hashtable nameCounts = new Hashtable();
-
             string[] entries = input.Split(' ');
-
             foreach (string a in entries)
             {
                 if (nameCounts.ContainsKey(a))
@@ -44,10 +42,10 @@ namespace ConsoleApp3
 
         static void nom2()
         {
-            Console.Write("Введите последовательность блоков: ");
-            string input = Console.ReadLine();
+            Write("Введите последовательность блоков: ");
+            string input = ReadLine();
             string result = BuildTower(input);
-            Console.WriteLine($"Итоговая башня: {result}");
+            WriteLine($"Итоговая башня: {result}");
         }
 
         static string BuildTower(string sequence)
