@@ -1,0 +1,60 @@
+using System;
+using System.Buffers;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
+using ConsoleApp3;
+using static System.Console;
+
+
+namespace ConsoleApp3
+{
+    public class CoinVault<T, U> where T : struct where U : struct
+    {
+        private SortedList<T, U> coins;
+        public CoinVault()
+        {
+            coins = new SortedList<T, U>();
+        }
+
+        public void AddCoin(T year, U price)
+        {
+            if (coins.ContainsKey(year))
+            {
+                WriteLine($"Монета за {year} год уже существует в хранилище.");
+            }
+            else
+            {
+                coins.Add(year, price);
+                WriteLine($"Монета за {year} год добавлена с ценой {price}.");
+            }
+        }
+
+        public void ShowVault()
+        {
+            foreach (var coin in coins)
+            {
+                WriteLine($"Год: {coin.Key}, Цена: {coin.Value}");
+            }
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {   
+            CoinVault<int, decimal> coinVault = new CoinVault<int, decimal>();
+            coinVault.AddCoin(1804, 12.50m);
+            coinVault.AddCoin(1921, 75.00m);
+            coinVault.AddCoin(1969, 3.20m);
+            coinVault.AddCoin(1921, 80.00m); 
+            WriteLine("Содержимое хранилища монет:");
+            coinVault.ShowVault();
+        }
+    }
+}
