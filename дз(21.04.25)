@@ -1,0 +1,67 @@
+using System;
+using System.Buffers;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
+using ConsoleApp3;
+using static System.Console;
+
+
+namespace ConsoleApp3
+{
+class Program
+    {
+        static void nom1()
+        {
+            string filePath = "text.txt"; 
+            WriteLine("Введите текст для записи в файл:");
+            string inputText = ReadLine();
+            File.WriteAllText(filePath, inputText);
+            string fileContent = File.ReadAllText(filePath);
+            string[] words = fileContent.ToLower().Split(new char[] { ' ', '\n', '\r', ',', '.', '!', '?' });
+            HashSet<string> uniqueWords = new HashSet<string>(words);
+            WriteLine("Уникальные слова:");
+            foreach (var word in uniqueWords)
+            {
+                    WriteLine(word);
+            }
+            WriteLine($"Количество уникальных слов: {uniqueWords.Count}");
+        }
+
+        static void nom2()
+        {
+            string filePath = "lines.txt";
+            File.WriteAllText(filePath, string.Empty);
+            WriteLine("Введите строки текста (введите 'exit' для завершения):");
+            string line;
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                while (true)
+                {
+                    line = ReadLine();
+                    if (line.ToLower() == "exit")
+                    {
+                        break;
+                    }
+                    writer.WriteLine(line);
+                }
+            }
+            string[] lines = File.ReadAllLines(filePath);
+            WriteLine("Строки с четными номерами:");
+            for (int i = 1; i < lines.Length; i += 2)
+            {
+                WriteLine(lines[i]);
+            }
+        }
+            static void Main()
+        {
+            nom1 ();
+            nom2 ();
+        }
+    }
+}
