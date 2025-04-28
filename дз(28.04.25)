@@ -1,0 +1,71 @@
+using System;
+using System.Collections.Generic;
+using System.Text.Json;
+
+namespace ConsoleApp6
+{
+    public class SpellEffect
+    {
+        public string Fire { get; set; }
+        public string Ice { get; set; }
+        public string Lightning { get; set; }
+
+        public SpellEffect(string fire, string ice, string lightning)
+        {
+            Fire = fire;
+            Ice = ice;
+            Lightning = lightning;
+        }
+    }
+
+    public class Spell
+    {
+        public string Name { get; set; }
+        public int PowerLevel { get; set; }
+        public SpellEffect Effect { get; set; }
+
+        public Spell(string name, int powerLevel, SpellEffect effect)
+        {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentException("Название заклинания не может быть пустым.");
+
+            if (powerLevel < 1 || powerLevel > 10)
+                throw new ArgumentException("Уровень силы должен быть от 1 до 10.");
+
+            Name = name;
+            PowerLevel = powerLevel;
+            Effect = effect;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var spells = new List<Spell>
+            {
+                new Spell("Огненный шар", 7, new SpellEffect("Огонь", null, null)),
+                new Spell("Ледяная игла", 5, new SpellEffect(null, "Лед", null)),
+                new Spell("Громовой удар", 9, new SpellEffect(null, null, "Молния"))
+            };
+
+            string jsonString = JsonSerializer.Serialize(spells, new JsonSerializerOptions { WriteIndented = true });
+            Console.WriteLine("Сериализованный JSON:");
+            Console.WriteLine(jsonString);
+
+            var deserializedSpells = JsonSerializer.Deserialize<List<Spell>>(jsonString);
+            Console.WriteLine("\nДесериализованные заклинания:");
+            foreach (var spell in deserializedSpells)
+            {
+                Console.WriteLine($"Название: {spell.Name}, Уровень силы: {spell.PowerLevel}, Эффект: Огонь={spell.Effect.Fire}, Лед={spell.Effect.Ice}, Молния={spell.Effect.Lightning}");
+            }
+
+            string incorrectJson = "[{\"Name\":\"Огненный шар\",\"PowerLevel\":7,\"Effect\":\"Зеленый\"}]";
+            var deserializedIncorrectSpells = JsonSerializer.Deserialize<List<Spell>>(incorrectJson);
+            if (deserializedIncorrectSpells == null)
+            {
+                Console.WriteLine("\nНекорректный JSON. Десериализация не удалась.");
+            }
+        }
+    }
+}
