@@ -1,0 +1,77 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
+using ConsoleApp6;
+using static System.Console;
+
+
+namespace ConsoleApp6
+{
+    class Program
+    {
+        //1 фрагмент сложность составляет O(n)
+        //2 фрагмент сложность составляет O(n²).
+        //3 фрагмент сложность составляет O(1)
+        static int LinearSearch(int[] arr, int target)
+        {
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] == target)
+                    return i;
+            }
+            return -1; 
+        }
+
+        static int BinarySearch(int[] arr, int target)
+        {
+            int left = 0;
+            int right = arr.Length - 1;
+
+            while (left <= right)
+            {
+                int mid = left + (right - left) / 2;
+                if (arr[mid] == target)
+                    return mid;
+
+                if (arr[mid] < target)
+                    left = mid + 1;
+                else
+                    right = mid - 1;
+            }
+            return -1; 
+        }
+
+        static int HashTableSearch(Dictionary<int, int> hashTable, int target)
+        {
+            return hashTable.ContainsKey(target) ? hashTable[target] : -1; 
+        }
+
+        static void Main()
+        {
+            int[] arr = { 1, 3, 5, 7, 9, 11, 13, 15 };
+            int target = 7;
+            int result = LinearSearch(arr, target);
+            WriteLine($"Элемент найден на позиции {result}");
+            int[] sortedArr = { 1, 3, 5, 7, 9, 11, 13, 15 };
+            int result2 = BinarySearch(sortedArr, target);
+            WriteLine($"Элемент найден на позиции {result2}");
+            Dictionary<int, int> hashTable = new Dictionary<int, int>
+        {
+            { 1, 0 },
+            { 3, 1 },
+            { 5, 2 },
+            { 7, 3 },
+            { 9, 4 },
+            { 11, 5 },
+            { 13, 6 },
+            { 15, 7 }
+        };
+            int result3 = HashTableSearch(hashTable, target);
+            WriteLine($"Элемент найден на позиции {result3}");
+        }
+    }
+}
