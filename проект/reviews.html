@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отзывы - KVA Code</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">⚡</div>
+                    KVA<span>Code</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="courses.html">Курсы</a></li>
+                        <li><a href="about.html">О нас</a></li>
+                        <li><a href="reviews.html" class="active">Отзывы</a></li>
+                        <li><a href="blog.html">Блог</a></li>
+                        <li><a href="vacancies.html">Вакансии</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button id="loginBtn" class="btn-outline">Вход</button>
+                    <button id="registerBtn" class="btn-primary">Регистрация</button>
+                </div>
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <div class="page-hero-content">
+                <h1>Отзывы выпускников</h1>
+                <p>Реальные истории успеха наших студентов, которые уже работают в IT</p>
+                <div class="hero-features">
+                    <div class="feature">
+                        <div class="feature-icon">⭐</div>
+                        <span>4.9/5 рейтинг</span>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🎓</div>
+                        <span>2000+ выпускников</span>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">💼</div>
+                        <span>85% трудоустроились</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="reviews-stats">
+        <div class="container">
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-number">4.9</div>
+                    <div class="stat-label">Средний рейтинг</div>
+                    <div class="stars">★★★★★</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2000+</div>
+                    <div class="stat-label">Выпускников</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">85%</div>
+                    <div class="stat-label">Трудоустроились</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">94%</div>
+                    <div class="stat-label">Рекомендуют нас</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="reviews-main">
+        <div class="container">
+            <div class="reviews-filter">
+                <button class="filter-btn active" data-course="all">Все курсы</button>
+                <button class="filter-btn" data-course="fullstack">FullStack</button>
+                <button class="filter-btn" data-course="python">Python</button>
+                <button class="filter-btn" data-course="java">Java</button>
+                <button class="filter-btn" data-course="frontend">Frontend</button>
+            </div>
+
+            <div class="reviews-grid">
+                <div class="review-card" data-course="fullstack">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">АК</div>
+                            <div>
+                                <h4>Алексей К.</h4>
+                                <p>Frontend Developer в Яндекс</p>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="review-date">2 недели назад</span>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <p>"Благодаря курсу FullStack JavaScript я смог сменить профессию с менеджера на разработчика. Особенно ценна была практическая часть - мы создавали реальные проекты, которые потом вошли в мое портфолио. Менторы всегда были на связи и помогали с любыми вопросами."</p>
+                    </div>
+                    <div class="review-course">
+                        <span class="course-badge">FullStack JavaScript</span>
+                    </div>
+                </div>
+
+                <div class="review-card" data-course="python">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">МС</div>
+                            <div>
+                                <h4>Мария С.</h4>
+                                <p>Python Developer в Tinkoff</p>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="review-date">1 месяц назад</span>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <p>"Как человек без технического образования, я боялась начинать изучать программирование. Но курс Python Pro построен так логично, что даже сложные темы становились понятными. Отдельное спасибо ментору Дмитрию за терпение и подробные объяснения!"</p>
+                    </div>
+                    <div class="review-course">
+                        <span class="course-badge">Python Pro</span>
+                    </div>
+                </div>
+
+                <div class="review-card" data-course="java">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">ДП</div>
+                            <div>
+                                <h4>Дмитрий П.</h4>
+                                <p>Java Developer в Сбере</p>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            <span class="stars">★★★★☆</span>
+                            <span class="review-date">2 месяца назад</span>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <p>"Курс Java Enterprise дал мне именно те знания, которые требуются в enterprise-разработке. Spring Boot, Microservices, Docker - все это мы изучали на реальных кейсах. После курса прошел 3 собеседования и выбрал лучшее предложение."</p>
+                    </div>
+                    <div class="review-course">
+                        <span class="course-badge">Java Enterprise</span>
+                    </div>
+                </div>
+
+                <div class="review-card" data-course="frontend">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">ЕЛ</div>
+                            <div>
+                                <h4>Екатерина Л.</h4>
+                                <p>React Developer в Ozon</p>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="review-date">3 месяца назад</span>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <p>"Frontend курс превзошел все ожидания! От базового HTML/CSS до продвинутого React с TypeScript - все объясняется очень доступно. Проекты, которые мы делали, были настоящими, а не учебными. Это помогло мне быстро найти работу."</p>
+                    </div>
+                    <div class="review-course">
+                        <span class="course-badge">Frontend React</span>
+                    </div>
+                </div>
+
+                <div class="review-card" data-course="fullstack">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">СИ</div>
+                            <div>
+                                <h4>Сергей И.</h4>
+                                <p>FullStack Developer в VK</p>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="review-date">4 месяца назад</span>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <p>"Перешел из тестирования в разработку благодаря KVA Code. Курс FullStack дал полное понимание всего процесса разработки. Теперь работаю fullstack-разработчиком и занимаюсь интересными проектами. Спасибо команде за поддержку!"</p>
+                    </div>
+                    <div class="review-course">
+                        <span class="course-badge">FullStack JavaScript</span>
+                    </div>
+                </div>
+
+                <div class="review-card" data-course="python">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">АМ</div>
+                            <div>
+                                <h4>Анна М.</h4>
+                                <p>Data Scientist в МТС</p>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="review-date">5 месяцев назад</span>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <p>"Искала курсы по Python для Data Science и не ошиблась с выбором. Преподаватели - практикующие специалисты, дают актуальные знания. После курса получила оффер в крупную компанию и теперь занимаюсь машинным обучением."</p>
+                    </div>
+                    <div class="review-course">
+                        <span class="course-badge">Python Pro</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="add-review">
+        <div class="container">
+            <div class="add-review-content">
+                <h2>Оставьте свой отзыв</h2>
+                <p>Поделитесь своим опытом обучения в KVA Code</p>
+                <button class="btn-primary" onclick="showReviewModal()">Написать отзыв</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <div class="logo-icon">⚡</div>
+                        KVA<span>Code</span>
+                    </div>
+                    <p>Онлайн-школа программирования с фокусом на практику и трудоустройство.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">VK</a>
+                        <a href="#" class="social-link">TG</a>
+                        <a href="#" class="social-link">YT</a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h3>Курсы</h3>
+                        <a href="courses.html">Все курсы</a>
+                        <a href="#">FullStack</a>
+                        <a href="#">Python</a>
+                        <a href="#">Java</a>
+                    </div>
+                    <div class="link-group">
+                        <h3>Компания</h3>
+                        <a href="about.html">О нас</a>
+                        <a href="reviews.html">Отзывы</a>
+                        <a href="vacancies.html">Вакансии</a>
+                        <a href="blog.html">Блог</a>
+                    </div>
+                    <div class="link-group">
+                        <h3>Поддержка</h3>
+                        <a href="contact.html">Контакты</a>
+                        <a href="faq.html">FAQ</a>
+                        <a href="documents.html">Документы</a>
+                        <a href="help.html">Помощь</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 KVA Code. Все права защищены.</p>
+                <div class="footer-legal">
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Условия использования</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

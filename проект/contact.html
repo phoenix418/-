@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты - KVA Code</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">⚡</div>
+                    KVA<span>Code</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="courses.html">Курсы</a></li>
+                        <li><a href="about.html">О нас</a></li>
+                        <li><a href="reviews.html">Отзывы</a></li>
+                        <li><a href="blog.html">Блог</a></li>
+                        <li><a href="vacancies.html">Вакансии</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button id="loginBtn" class="btn-outline">Вход</button>
+                    <button id="registerBtn" class="btn-primary">Регистрация</button>
+                </div>
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <div class="page-hero-content">
+                <h1>Контакты</h1>
+                <p>Свяжитесь с нами любым удобным способом. Мы всегда рады помочь!</p>
+                <div class="hero-features">
+                    <div class="feature">
+                        <div class="feature-icon">📧</div>
+                        <span>Быстрый ответ</span>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">💬</div>
+                        <span>Поддержка 24/7</span>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🎯</div>
+                        <span>Помощь в выборе</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-main">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h2>Наши контакты</h2>
+                    <p>Мы всегда на связи и готовы ответить на все ваши вопросы</p>
+
+                    <div class="contact-cards">
+                        <div class="contact-card">
+                            <div class="contact-icon">📧</div>
+                            <div class="contact-details">
+                                <h3>Email</h3>
+                                <p>info@kvacode.ru</p>
+                                <p>support@kvacode.ru</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-card">
+                            <div class="contact-icon">📞</div>
+                            <div class="contact-details">
+                                <h3>Телефон</h3>
+                                <p>+7 (999) 123-45-67</p>
+                                <p>+7 (495) 123-45-67</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-card">
+                            <div class="contact-icon">📍</div>
+                            <div class="contact-details">
+                                <h3>Адрес</h3>
+                                <p>Москва, ул. Тверская, д. 10</p>
+                                <p>Санкт-Петербург, Невский пр., д. 25</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-card">
+                            <div class="contact-icon">🕒</div>
+                            <div class="contact-details">
+                                <h3>Время работы</h3>
+                                <p>Пн-Пт: 9:00 - 21:00</p>
+                                <p>Сб-Вс: 10:00 - 18:00</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="social-section">
+                        <h3>Мы в соцсетях</h3>
+                        <div class="social-buttons">
+                            <a href="#" class="social-btn vk">
+                                <span>VK</span>
+                            </a>
+                            <a href="#" class="social-btn tg">
+                                <span>Telegram</span>
+                            </a>
+                            <a href="#" class="social-btn yt">
+                                <span>YouTube</span>
+                            </a>
+                            <a href="#" class="social-btn habr">
+                                <span>Habr</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form-section">
+                    <div class="form-container">
+                        <h2>Остались вопросы?</h2>
+                        <p>Заполните форму и мы свяжемся с вами в течение часа</p>
+
+                        <form id="contactForm" class="contact-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="name">Имя *</label>
+                                    <input type="text" id="name" name="name" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">Телефон</label>
+                                <input type="tel" id="phone" name="phone">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="course">Интересующий курс</label>
+                                <select id="course" name="course">
+                                    <option value="">Выберите курс</option>
+                                    <option value="fullstack">FullStack JavaScript</option>
+                                    <option value="python">Python Fullstack</option>
+                                    <option value="java">Java Enterprise</option>
+                                    <option value="frontend">Frontend React</option>
+                                    <option value="devops">DevOps</option>
+                                    <option value="mobile">React Native</option>
+                                    <option value="other">Другое</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message">Сообщение *</label>
+                                <textarea id="message" name="message" rows="5" placeholder="Расскажите о ваших целях и вопросах..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn-primary full-width">
+                                Отправить сообщение
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>Частые вопросы</h2>
+                <p>Ответы на самые популярные вопросы от наших студентов</p>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Как проходит обучение?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Обучение состоит из видео-уроков, практических заданий, проектов и еженедельных встреч с ментором. Все материалы доступны 24/7 в личном кабинете.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Можно ли оплатить курс в рассрочку?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Да, мы предоставляем рассрочку на 6-12 месяцев без первоначального взноса через наших партнеров. Подробности уточняйте у менеджера.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Есть ли гарантия трудоустройства?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Мы гарантируем помощь в трудоустройстве: подготовку к собеседованиям, доступ к вакансиям партнеров и карьерные консультации. 85% наших выпускников находят работу в IT.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Нужны ли начальные знания?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Большинство наших курсов рассчитаны на начинающих. Для продвинутых курсов мы указываем необходимые требования. Рекомендуем начать с бесплатных вводных уроков.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="map-section">
+        <div class="container">
+            <div class="map-container">
+                <div class="map-placeholder">
+                    <div class="map-content">
+                        <h3>Наши офисы</h3>
+                        <div class="office-cards">
+                            <div class="office-card">
+                                <h4>Москва</h4>
+                                <p>ул. Тверская, д. 10</p>
+                                <p>Ближайшее метро: Тверская</p>
+                            </div>
+                            <div class="office-card">
+                                <h4>Санкт-Петербург</h4>
+                                <p>Невский пр., д. 25</p>
+                                <p>Ближайшее метро: Невский проспект</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <div class="logo-icon">⚡</div>
+                        KVA<span>Code</span>
+                    </div>
+                    <p>Онлайн-школа программирования с фокусом на практику и трудоустройство.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">VK</a>
+                        <a href="#" class="social-link">TG</a>
+                        <a href="#" class="social-link">YT</a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h3>Курсы</h3>
+                        <a href="courses.html">Все курсы</a>
+                        <a href="#">FullStack</a>
+                        <a href="#">Python</a>
+                        <a href="#">Java</a>
+                    </div>
+                    <div class="link-group">
+                        <h3>Компания</h3>
+                        <a href="about.html">О нас</a>
+                        <a href="reviews.html">Отзывы</a>
+                        <a href="vacancies.html">Вакансии</a>
+                        <a href="blog.html">Блог</a>
+                    </div>
+                    <div class="link-group">
+                        <h3>Поддержка</h3>
+                        <a href="contact.html">Контакты</a>
+                        <a href="faq.html">FAQ</a>
+                        <a href="documents.html">Документы</a>
+                        <a href="help.html">Помощь</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 KVA Code. Все права защищены.</p>
+                <div class="footer-legal">
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Условия использования</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
