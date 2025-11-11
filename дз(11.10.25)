@@ -1,0 +1,15 @@
+using System.Diagnostics;
+
+namespace дз_11._10._25_
+{
+    internal class Program
+    {
+        static void Main()
+        {
+            ProcessStartInfo info = new ProcessStartInfo();
+            info.FileName = "notepad.exe";
+            info.Arguments = @"C:\test.txt";
+            Process.Start(info);
+        }
+    }
+}
