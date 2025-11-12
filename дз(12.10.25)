@@ -1,0 +1,103 @@
+//Параллельные вычисления: Создайте метод, вычисляющий сумму
+// квадратов чисел от 1 до 1,000,000. Разбейте диапазон на 4 части и
+// вычислите каждую часть в отдельной задаче (Task), затем суммируйте
+// результаты. Сравните время выполнения с последовательной версией.
+namespace дз_12._11._25_
+{
+    using System;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Runtime.InteropServices;
+    using System.Threading.Tasks;
+
+    class Program
+    {
+        static void Main()
+        {
+            //long amount = 1;
+            //for (int i = 2; i <= 250_000; i++)
+            //{
+            //    amount += i * i;
+            //}
+            //for (int i = 250_001; i <= 500_000; i++)
+            //{
+            //    amount += i * i;
+            //}
+            //for (int i = 500_001; i <= 750_000; i++)
+            //{
+            //    amount += i * i;
+            //}
+            //for (int i = 750_001; i <= 1000000; i++)
+            //{
+            //    amount += i * i;
+            //}
+            long amount_1 = 0;
+            long amount_2 = 0;
+            long amount_3 = 0;
+            long amount_4 = 0;
+            long total_amount = 0;
+
+            Thread firstDbThread = new Thread(() => { amount_1 = FirstDb(); });
+            Thread secondDbThread = new Thread(() => { amount_2 = SecondtDb(); });
+            Thread thirdtDbThread = new Thread(() => { amount_3 = ThirdtDb(); });
+            Thread fourthtDbThread = new Thread(() => { amount_4 = FourthtDb(); });
+            firstDbThread.Start();
+            secondDbThread.Start();
+            thirdtDbThread.Start();
+            fourthtDbThread.Start();
+
+            firstDbThread.Join();
+            secondDbThread.Join();
+            thirdtDbThread.Join();
+            fourthtDbThread.Join();
+
+            total_amount = amount_1 + amount_2 + amount_3 + amount_4;
+
+            Console.WriteLine($"Сумма квадратов от 1 до 1000000: {total_amount}");
+        }   
+
+        //1 диапазон 
+        static long FirstDb()
+        {
+            long amount = 0;
+            for (long i = 1; i <= 250_000; i++)
+            {
+                amount += i * i;
+            }
+            return amount;
+        }
+
+        //2 диапазон 
+        static long SecondtDb()
+        {
+            long amount = 0;
+            for (long i = 250_001; i <= 500_000; i++)
+            {
+                amount += i * i;
+            }
+            return amount;
+        }
+
+        //3 диапазон 
+        static long ThirdtDb()
+        {
+            long amount = 0;
+            for (long i = 500_001; i <= 750_000; i++)
+            {
+                amount += i * i;
+            }
+            return amount;
+        }
+
+        //4 диапазон 
+        static long FourthtDb()
+        {
+            long amount = 0;
+            for (long i = 750_001; i <= 1_000_000; i++)
+            {
+                amount += i * i;
+            }
+            return amount;
+        }
+    }
+}
