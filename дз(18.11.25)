@@ -1,0 +1,222 @@
+namespace _07._11._25
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+
+    using System.Threading;
+    using System.Threading.Tasks;
+
+
+    class Program
+    {
+        #region --- классы----
+        public class Mage
+        {
+            public string Name { get; set; }
+            public int Level { get; set; }
+            public int MaxMana { get; set; }
+            public int Mana { get; set; }
+            public int Health { get; set; }
+
+            public Mage(string name, int level, int maxMana, int mana, int health)
+            {
+                Name = name;
+                Level = level;
+                Mana = mana;
+                MaxMana = maxMana;
+                Health = health;
+            }
+
+            public override string ToString()
+            {
+                return $"{Name} (Ур. {Level}) - Мана: {Mana}/{MaxMana}, Здоровье: {Health}";
+            }
+            public void RegenerateMana(int amount)
+            {
+                Mana = Math.Min(Mana + amount, MaxMana);
+            }
+
+        }
+        public class MagicTotem
+        {
+            private List<Mage> _mages = new List<Mage>();
+
+            public async Task<List<Mage>> ActivateTotemAsync()
+            {
+                while (true)
+                {
+                    await Task.Delay(10000);
+                    foreach (var mage in _mages)
+                    {
+                        mage.MaxMana += 50;
+                        Console.WriteLine($"{mage.Name} усилен! Максимум мана = {mage.MaxMana}");
+                    }
+                    return _mages;
+                }
+            }
+
+            public void AddMage(Mage mage)
+            {
+                _mages.Add(mage);
+            }
+        }
+        public class Guild
+        {
+            public async Task<List<Mage>> InitializeGuildAsync()
+            {
+
+                return new List<Mage>
+                {
+                    new Mage("Элрандор", 5,100, 0, 80),
+                    new Mage("Сильвана", 7,120, 0, 70),
+                    new Mage("Громар", 3,80, 0, 120),
+                    new Mage("Аэрин", 6,110, 0, 75),
+                    new Mage("Морган", 4,90, 0, 85)
+                };
+            }
+
+        }
+        #endregion
+        static async Task Main()
+        {
+
+            #region --- Маги main----
+            var guild = new Guild();
+            var mages = await guild.InitializeGuildAsync();
+            List<Task> taskList = new List<Task>();
+            foreach (var mage in mages)
+            {
+                taskList.Add(Task.Run(async () =>
+                {
+                    while (true)
+                    {
+                        await Task.Delay(3000);
+                        mage.RegenerateMana(10);
+                    }
+                }));
+            }
+
+            //var manareg = new Thread(async () => { await DisplayMagesStatusAsync(mages); });
+            //var trennig = new Thread(async () => { await StartTrainingAsync(mages[0], 3); });
+            //var duels = new Thread(async () => { await StartDuelsAsync(mages[0], mages[1]); });
+
+            //manareg.Start();
+            //trennig.Start();
+            //duels.Start();
+
+            //manareg.Join();
+            //trennig.Join();
+            //duels.Join();
+
+            //var totem = new MagicTotem();
+            //totem.AddMage(mages[1]);
+            //totem.AddMage(mages[0]);
+            //var mages_ = await totem.ActivateTotemAsync();
+            bool[] results = await SearchArtifactsAsync();
+
+            #endregion
+        }
+
+      
+        #region --- Маги ----
+        static async Task DisplayMagesStatusAsync(List<Mage> mages)
+        {
+            while (true)
+            {
+
+                foreach (var mage in mages)
+                {
+                    if (mage.Mana <= mage.MaxMana)
+                    {
+                        Thread.Sleep(100);
+                        Console.WriteLine($"{mage}");
+                    }
+                }
+                Thread.Sleep(5000);
+
+            }
+        }
+
+        static async Task StartTrainingAsync(Mage mage, int amount)
+        {
+            if (mage.Mana >= 10)
+            {
+                for (int i = 1; i <= amount; i++)
+                {
+                    Console.WriteLine($"{mage.Name} выполняет тренировочное заклинание #{i}");
+                    Console.WriteLine($"{mage.Name} завершил заклинание #{i}");
+                    mage.Mana -= 10;
+                }
+
+                Console.WriteLine($"Тренировка {mage.Name} завершена! Всего выполнено заклинаний: {amount}");
+            }
+        }
+
+        static async Task StartDuelsAsync(Mage mage1, Mage mage2)
+        {
+            mage1.Mana = mage2.Mana = 100;
+            Console.WriteLine($"участник 1 - {mage1.Name}: текущая манна {mage1.Mana}");
+            Console.WriteLine($"участник 2 - {mage2.Name}: текущая манна {mage2.Mana}");
+            var duelTask1 = Task.Run(async () => await DuelAsync(mage1));
+            var duelTask2 = Task.Run(async () => await DuelAsync(mage2));
+            Task.WaitAll(duelTask1, duelTask2);
+            string winner = mage1.Mana > mage2.Mana ? mage1.Name : mage2.Mana > mage1.Mana ? mage2.Name : "Ничья";
+            Console.WriteLine($"Дуэль завершена! Победитель: {winner}");
+            Console.WriteLine($"Итоговый результат: {mage1.Name} - {mage1.Mana} маны, {mage2.Name} - {mage2.Mana} маны");
+        }
+
+        static async Task<bool> DuelAsync(Mage mage1)
+        {
+            Random random = new Random();
+            int delay = random.Next(1000, 5001);
+            int manaCost = random.Next(20, 61);
+            await Task.Delay(delay);
+            if (mage1.Mana >= manaCost)
+            {
+                mage1.Mana -= manaCost;
+                Console.WriteLine($"{mage1.Name} использовал заклинание (стоимость: {manaCost}), осталось маны: {mage1.Mana} ");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"{mage1.Name} не хватило маны для заклинания! Требуется: {manaCost}, доступно: {mage1.Mana}");
+                return false;
+            }
+        }
+
+        static async Task<bool[]> SearchArtifactsAsync()
+        {
+            var SearchArt1 = Task.Run(async () => await SearchArtifacts());
+            var SearchArt2 = Task.Run(async () => await SearchArtifacts());
+            var SearchArt3 = Task.Run(async () => await SearchArtifacts());
+            var SearchArt4 = Task.Run(async () => await SearchArtifacts());
+            var SearchArt5 = Task.Run(async () => await SearchArtifacts());
+            return await Task.WhenAll(SearchArt1, SearchArt2, SearchArt3, SearchArt4, SearchArt5);
+
+        }
+
+        static async Task<bool> SearchArtifacts()
+        {
+            Random random = new Random();
+            int delay = random.Next(1000, 5001);
+            Console.WriteLine($"Поиск артефакта начат...");
+            await Task.Delay(delay);
+            bool choice = random.Next(0, 2) == 1;
+
+            if (choice)
+            {
+                Console.WriteLine("Артефакт найден!");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Артефакт не найден");
+                return false;
+            }
+        }
+        #endregion
+
+
+    }
+}
