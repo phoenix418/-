@@ -1,0 +1,216 @@
+using System.Threading;
+
+namespace _15_11_25
+{
+    internal class Program
+    {
+        static void Main()
+        {
+            Chest();
+            TradeExample();
+            DemoDeadlock();
+            DemoSolution();
+        }
+
+      
+
+        
+        #region === Простое: "Сундук с золотом" ===
+        private static int Gold = 100;
+        private static object lockObject = new object();
+
+        private static void Chest()
+        {
+            Thread[] tr = new Thread[3];
+
+            for (int i = 0; i < tr.Length; i++)
+            {
+                tr[i] = new Thread(() =>
+                {
+                    for (int j = 0; j < 10; j++)
+                    {
+                        GoldGet();
+                    }
+                });
+                tr[i].Name = $"Герой {i + 1}";
+                tr[i].Start();
+            }
+            foreach (Thread t in tr)
+            {
+                t.Join();
+            }
+            Console.WriteLine($"Количество золота: {Gold}");
+        }
+
+        private static void GoldGet()
+        {
+            lock (lockObject)
+            {
+                if (Gold >= 10)
+                {
+                    Thread.Sleep(10);
+                    Gold -= 10;
+                    Console.WriteLine($"{Thread.CurrentThread.Name} забрал 10 золота. Осталось: {Gold}");
+                }
+                else
+                {
+                    Console.WriteLine($"{Thread.CurrentThread.Name} не может забрать золото. Недостаточно средств: {Gold}");
+                }
+            }
+        }
+        #endregion
+        #region ===="Торговля в таверне"====
+
+        private static void TradeExample()
+        {
+            Trader trader1 = new Trader(100);
+            Trader trader2 = new Trader(50);
+            Console.WriteLine($"До сделки: Торговец1 - {trader1.Gold}, Торговец2 - {trader2.Gold}");
+            Tavern.MakeDeal(trader1, trader2, 30);
+            Tavern.MakeDeal(trader2, trader1, 10);
+            Console.WriteLine($"После сделки: Торговец1 - {trader1.Gold}, Торговец2 - {trader2.Gold}");
+
+
+        }
+
+        private class Trader
+        {
+            public int Gold { get; set; }
+            private readonly object lockObject = new object();
+
+            public Trader(int gold)
+            {
+                Gold = gold;
+            }
+
+            public object GetLock()
+            {
+                return lockObject;
+            }
+        }
+
+
+        private class Tavern
+        {
+            private static readonly int TimeoutMs = 1000;
+
+            public static void MakeDeal(Trader a, Trader b, int amount)
+            {
+
+                object first = a.GetLock();
+                object second = b.GetLock();
+                bool firstLockTaken = false;
+                bool secondLockTaken = false;
+                try
+                {
+                    Monitor.TryEnter(first, TimeoutMs, ref firstLockTaken);  
+                    if (a.Gold < amount)
+                    {
+                        throw new InvalidOperationException($"Недостаточно золота: требуется {amount}, есть {a.Gold}");
+                    }
+                    a.Gold -= amount;
+                    b.Gold += amount;
+                    Console.WriteLine($"Сделка: {amount} золота переведено. Теперь у A: {a.Gold}, у B: {b.Gold}");
+                }
+                finally
+                {
+                    if (firstLockTaken)
+                    {
+                        Monitor.Exit(first);
+                    }
+                    if (secondLockTaken)
+                    {
+                        Monitor.Exit(second);
+                    }
+                }
+            }    
+        }
+        #endregion
+        #region === Ссора двух гномов  ===
+        static object anvil = new object();
+        static object forge = new object();
+        private static void DemoDeadlock()
+        {
+            Thread dwarfBlacksmith = new Thread(() =>
+            {
+                Console.WriteLine("Захватываю anvil...");
+                lock (anvil)
+                {
+                    Console.WriteLine("Захватил anvil!");
+                    Thread.Sleep(100);
+                    Console.WriteLine("Пытаюсь захватить forge...");
+                    lock (forge)
+                    {
+                        Console.WriteLine("Захватил forge! Работаю...");
+                    }
+                }
+            });
+
+            Thread dwarfEngineer = new Thread(() =>
+            {
+                Console.WriteLine("Захватываю forge...");
+                lock (forge)
+                {
+                    Console.WriteLine("Захватил forge!");
+                    Thread.Sleep(100);
+
+                    Console.WriteLine("Пытаюсь захватить anvil...");
+                    lock (anvil)
+                    {
+                        Console.WriteLine("Захватил anvil! Работаю...");
+                    }
+                }
+            });
+            dwarfBlacksmith.Start();
+            dwarfEngineer.Start();
+            Thread.Sleep(2000);
+            if (dwarfBlacksmith.IsAlive || dwarfEngineer.IsAlive)
+                Console.WriteLine("💀 ДЕДЛОК! Гномы заблокировали друг друга!");
+            Thread.Sleep(500);
+        }
+
+        private static void DemoSolution()
+        {
+            Thread dwarfBlacksmith = new Thread(() =>
+            {
+                Console.WriteLine("Захватываю anvil...");
+                lock (anvil)
+                {
+                    Console.WriteLine("Захватил anvil!");
+                    Thread.Sleep(100);
+
+                    Console.WriteLine("Пытаюсь захватить forge...");
+                    lock (forge)
+                    {
+                        Console.WriteLine("Захватил forge! Работаю...");
+                    }
+                }
+            });
+
+            Thread dwarfEngineer = new Thread(() =>
+            {
+                Console.WriteLine("Захватываю anvil..."); 
+                lock (anvil)
+                {
+                    Console.WriteLine("Захватил anvil!");
+                    Thread.Sleep(100);
+                    Console.WriteLine("Пытаюсь захватить forge...");
+                    lock (forge)
+                    {
+                        Console.WriteLine("Захватил forge! Работаю...");
+                    }
+                }
+            });
+            dwarfBlacksmith.Start();
+            dwarfEngineer.Start();
+            dwarfBlacksmith.Join();
+            dwarfEngineer.Join();
+            Console.WriteLine("✅ Оба гнома успешно завершили работу!");
+        }
+    }
+    #endregion
+    #region 
+
+    #endregion
+}
+
